@@ -1,0 +1,83 @@
+{
+  "contract_name": "Ownable",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "payable": false,
+      "type": "constructor"
+    }
+  ],
+  "unlinked_binary": "0x6060604052341561000c57fe5b5b60008054600160a060020a03191633600160a060020a03161790555b5b60ef806100386000396000f300606060405263ffffffff60e060020a6000350416638da5cb5b8114602a578063f2fde38b146053575bfe5b3415603157fe5b6037606e565b60408051600160a060020a039092168252519081900360200190f35b3415605a57fe5b606c600160a060020a0360043516607d565b005b600054600160a060020a031681565b60005433600160a060020a039081169116141560bd57600160a060020a0381161560bd5760008054600160a060020a031916600160a060020a0383161790555b5b5b5b505600a165627a7a7230582065d2a221114ef5e77677d9fd1db555c997506e144ecdfeac5cbfe159b1d94fcd0029",
+  "networks": {
+    "1500285030623": {
+      "events": {},
+      "links": {},
+      "address": "0x96aa55eb06bb652cd985b803bbb510a56a9cf435",
+      "updated_at": 1500286641585
+    },
+    "1500287310286": {
+      "events": {},
+      "links": {},
+      "address": "0x5b5eafb42809559bc3cdce51ec34eab6b2dd1b71",
+      "updated_at": 1500287512594
+    },
+    "1500293178871": {
+      "events": {},
+      "links": {},
+      "address": "0xfce3fedcdaa9ca8b0bd95f626911eb4e7c5f882c",
+      "updated_at": 1500293572499
+    },
+    "1500363462276": {
+      "events": {},
+      "links": {},
+      "address": "0xc0d6fa8637c4ee7d933a3b17876594de4fe305b3",
+      "updated_at": 1500363602703
+    },
+    "1500886208459": {
+      "events": {},
+      "links": {},
+      "address": "0xc2fb1d90666e11717831930bf3f922a5bb01db23",
+      "updated_at": 1500886219566
+    },
+    "1501505608218": {
+      "events": {},
+      "links": {},
+      "address": "0x0663e849cdf9dff91f3e9b1c0a39f8b628e6b9ef",
+      "updated_at": 1501505637015
+    },
+    "1501505953424": {
+      "events": {},
+      "links": {},
+      "address": "0x391f5b8afa32c82792f2dbb1deb00ab13f454cc9",
+      "updated_at": 1501505992326
+    }
+  },
+  "schema_version": "0.0.5",
+  "updated_at": 1501505992326
+}
