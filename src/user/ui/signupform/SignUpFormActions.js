@@ -4,7 +4,7 @@ import store from '../../../store'
 
 const contract = require('truffle-contract')
 
-export function signUpUser(name) {
+export function signUpUser(name, email) {
   let web3 = store.getState().web3.web3Instance
 
   // Double-check web3's status.
@@ -21,23 +21,68 @@ export function signUpUser(name) {
       // Get current ethereum wallet.
       web3.eth.getCoinbase((error, coinbase) => {
         // Log errors, if any.
+        console.log(coinbase);
+        //coinbase is the ethereum address
         if (error) {
           console.error(error);
         }
 
+        console.log(authentication.deployed());
+
+        
+        
+      /*
+
         authentication.deployed().then(function(instance) {
           authenticationInstance = instance
 
+
+          console.log('test function');
           // Attempt to sign up user.
-          authenticationInstance.signup(name, {from: coinbase})
+          authenticationInstance.getData2(email, {from: coinbase})
           .then(function(result) {
             // If no error, login user.
+            console.log('no error');
+            console.log(result);
+            //console.log(result2);
+            return dispatch(loginUser());
+          })
+          .catch(function(result) {
+            // If error...
+          console.log('errorrr');
+          //console.log(result);
+          })
+        })
+       
+       */
+        
+       
+      
+        console.log(name,email);
+        authentication.deployed().then(function(instance) {
+          authenticationInstance = instance
+        ;
+
+          console.log('attempting signup');
+          // Attempt to sign up user.
+          authenticationInstance.signup2(name, email, {from: coinbase})
+          .then(function(result) {
+            // If no error, login user.
+            console.log('will login User');
+            console.log(result)
+
             return dispatch(loginUser())
           })
           .catch(function(result) {
             // If error...
+          console.log('errorrr');
           })
         })
+
+    
+
+
+        
       })
     }
   } else {

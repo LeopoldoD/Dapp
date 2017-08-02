@@ -5,12 +5,16 @@ class SignUpForm extends Component {
     super(props)
 
     this.state = {
-      name: ''
+      name: '',
+      email: ''
     }
   }
 
   onInputChange(event) {
     this.setState({ name: event.target.value })
+  }
+  onEmailChange(event) {
+    this.setState({ email: event.target.value })
   }
 
   handleSubmit(event) {
@@ -21,7 +25,19 @@ class SignUpForm extends Component {
       return alert('Please fill in your name.')
     }
 
-    this.props.onSignUpFormSubmit(this.state.name)
+    if(this.state.email.length <2){
+      return alert('Please enter a valid email');
+    }
+
+    var emailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; //Regular expression
+    if(this.state.email.match(emailformat))  { 
+      console.log('valid email')
+      this.props.onSignUpFormSubmit(this.state.name, this.state.email)
+    }
+    else
+    {
+      return alert('Please enter valid email.')
+    }
   }
 
   render() {
@@ -32,6 +48,9 @@ class SignUpForm extends Component {
           <input id="name" type="text" value={this.state.name} onChange={this.onInputChange.bind(this)} placeholder="Name" />
           <span className="pure-form-message">This is a required field.</span>
 
+          <label htmlFor="email">Email</label>
+          <input id="email" type="text" value={this.state.email} onChange={this.onEmailChange.bind(this)} placeholder="Email" />
+          <span className="pure-form-message">This is a required field.</span>
           <br />
 
           <button type="submit" className="pure-button pure-button-primary">Sign Up</button>

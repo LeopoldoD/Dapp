@@ -5,10 +5,10 @@ import store from '../../../store'
 const contract = require('truffle-contract')
 
 export const USER_LOGGED_IN = 'USER_LOGGED_IN'
-function userLoggedIn(user) {
+function userLoggedIn(user, email) {
   return {
     type: USER_LOGGED_IN,
-    payload: user
+    payload: user, email
   }
 }
 
@@ -35,14 +35,17 @@ export function loginUser() {
 
         authentication.deployed().then(function(instance) {
           authenticationInstance = instance
-
+          console.log('attempting login');
           // Attempt to login user.
           authenticationInstance.login({from: coinbase})
           .then(function(result) {
             // If no error, login user.
-            var userName = web3.toUtf8(result)
+            console.log(result);
+            var userName = web3.toUtf8(result[0]);
+            var userEmail = web3.toUtf8(result[1]);
 
-            dispatch(userLoggedIn({"name": userName}))
+
+            dispatch(userLoggedIn({"name": userName, "email": userEmail}))
 
             // Used a manual redirect here as opposed to a wrapper.
             // This way, once logged in a user can still access the home page.
