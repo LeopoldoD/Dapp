@@ -7,11 +7,11 @@ export const USER_UPDATED = 'USER_UPDATED'
 function userUpdated(user, email, phone) {
   return {
     type: USER_UPDATED,
-    payload: user, email/*, phone*/
+    payload: user, email, phone
   }
 }
 
-export function updateUser(name, email/*, phone*/) {
+export function updateUser(name, email, phone) {
   let web3 = store.getState().web3.web3Instance
 
   // Double-check web3's status.
@@ -36,13 +36,13 @@ export function updateUser(name, email/*, phone*/) {
           authenticationInstance = instance
 
           // Attempt to login user.
-          authenticationInstance.update(name, email,/* phone,*/ {from: coinbase})
+          authenticationInstance.update2(name, email, phone, {from: coinbase})
           .then(function(result) {
             // If no error, update user.
             console.log(result);
             console.log('with name and email');
 
-            dispatch(userUpdated({"name": name, "email": email/*, "phone": phone*/}))
+            dispatch(userUpdated({"name": name, "email": email, "phone": phone}))
 
             return alert('Name, email and phone number updated!')
           })

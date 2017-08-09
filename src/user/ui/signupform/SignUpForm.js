@@ -6,8 +6,8 @@ class SignUpForm extends Component {
 
     this.state = {
       name: '',
-      email: ''//,
-      //phone: ''
+      email: '',
+      phone: ''
     }
   }
 
@@ -34,9 +34,9 @@ class SignUpForm extends Component {
       return alert('Please enter a valid email');
     }
 
-    //if(this.state.phone.length <6){
-    //  return alert('Please enter a valid phone number');
-    //}
+    if(this.state.phone.length <6){
+      return alert('Please enter a valid phone number');
+    }
 
     var emailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; //Regular expression
     if(this.state.email.match(emailformat))  { 
@@ -59,6 +59,11 @@ class SignUpForm extends Component {
 
           <label htmlFor="email">Email</label>
           <input id="email" type="text" value={this.state.email} onChange={this.onEmailChange.bind(this)} placeholder="Email" />
+          <span className="pure-form-message">This is a required field.</span>
+          <br />
+
+         <label htmlFor="phone">Phone number</label>
+          <input id="phone" type="text" value={this.state.phone} onChange={this.onPhoneChange.bind(this)} placeholder="Phone" />
           <span className="pure-form-message">This is a required field.</span>
           <br />
 
