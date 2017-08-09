@@ -36,11 +36,11 @@ export function signUpUser(name, email/*. phone*/) {
         authentication.deployed().then(function(instance) {
           authenticationInstance = instance
 
-
+        /*
           console.log('test function');
           console.log(name,email);
           // Attempt to sign up user.
-          authenticationInstance.signup(name, email, {from: coinbase})
+          authenticationInstance.signup2(name, email, phone {from: coinbase})
           .then(function(result) {
             // If no error, login user.
             console.log('no error');
@@ -55,15 +55,11 @@ export function signUpUser(name, email/*. phone*/) {
           })
         })
        
-       
+      */
         
-       
-      /*
-        console.log(name,email);
-        authentication.deployed().then(function(instance) {
-          authenticationInstance = instance
-        ;
 
+      
+          console.log(name,email);
           console.log('attempting signup');
           // Attempt to sign up user.
           authenticationInstance.signup(name, email, {from: coinbase})
@@ -78,12 +74,9 @@ export function signUpUser(name, email/*. phone*/) {
             // If error...
           console.log('errorrr');
           })
-        })
-
-    */
+        }) 
 
 
-        
       })
     }
   } else {
