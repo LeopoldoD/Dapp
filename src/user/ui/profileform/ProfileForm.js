@@ -6,7 +6,8 @@ class ProfileForm extends Component {
 
     this.state = {
       name: this.props.name,
-      email: this. props.email
+      email: this. props.email/*,
+      phone: this.props.phone*/
     }
   }
 
@@ -16,6 +17,9 @@ class ProfileForm extends Component {
 
   onEmailChange(event) {
     this.setState({ email: event.target.value})
+  }
+  onPhoneChange(event) {
+    this.setState({ phone: event.target.value})
   }
 
   handleSubmit(event) {
@@ -30,12 +34,17 @@ class ProfileForm extends Component {
       return alert('Please enter a valid email');
     }
 
+    //if(this.state.phone.length <6){
+    //  return alert('Please enter a valid phone number');
+    //}
+
     var emailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; //Regular expression
     if(this.state.email.match(emailformat))  { 
-      this.props.onProfileFormSubmit(this.state.name)
+      this.props.onProfileFormSubmit(this.state.name, this.state.email/*, this.state.phone*/)
     }
-    
-    return alert('Please enter valid email.')
+    else{
+      return alert('Please enter valid email.')
+    }
   }
 
   render() {

@@ -4,14 +4,14 @@ import store from '../../../store'
 const contract = require('truffle-contract')
 
 export const USER_UPDATED = 'USER_UPDATED'
-function userUpdated(user) {
+function userUpdated(user, email, phone) {
   return {
     type: USER_UPDATED,
-    payload: user
+    payload: user, email/*, phone*/
   }
 }
 
-export function updateUser(name) {
+export function updateUser(name, email/*, phone*/) {
   let web3 = store.getState().web3.web3Instance
 
   // Double-check web3's status.
@@ -36,13 +36,15 @@ export function updateUser(name) {
           authenticationInstance = instance
 
           // Attempt to login user.
-          authenticationInstance.update(name, {from: coinbase})
+          authenticationInstance.update(name, email,/* phone,*/ {from: coinbase})
           .then(function(result) {
             // If no error, update user.
+            console.log(result);
+            console.log('with name and email');
 
-            dispatch(userUpdated({"name": name}))
+            dispatch(userUpdated({"name": name, "email": email/*, "phone": phone*/}))
 
-            return alert('Name updated!')
+            return alert('Name, email and phone number updated!')
           })
           .catch(function(result) {
             // If error...
