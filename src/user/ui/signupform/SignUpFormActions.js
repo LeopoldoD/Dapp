@@ -62,7 +62,7 @@ export function signUpUser(name, email, phone) {
           console.log(name,email);
           console.log('attempting signup');
           // Attempt to sign up user.
-          authenticationInstance.signup2(name, email, phone, {from: coinbase})
+          authenticationInstance.signup3(name, email, phone, {from: coinbase})
           .then(function(result) {
             // If no error, login user.
             console.log('will login User');

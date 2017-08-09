@@ -38,13 +38,14 @@ export function loginUser() {
           console.log('attempting login');
        
           // Attempt to login user.
-          authenticationInstance.login2({from: coinbase})
+          authenticationInstance.login3({from: coinbase})
           .then(function(result) {
             // If no error, login user.
             console.log(result);
             var userName = web3.toUtf8(result[0]);
             var userEmail = web3.toUtf8(result[1]);
-            var userPhone = web3.toUtf8(result[2]);
+            var userPhone = web3.toDecimal(result[2]);
+            //var userPhone = web3.toDecimal('0x12d687');
             
 
             dispatch(userLoggedIn({"name": userName, "email": userEmail, "phone": userPhone}))

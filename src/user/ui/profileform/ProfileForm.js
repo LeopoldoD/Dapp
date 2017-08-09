@@ -25,25 +25,37 @@ class ProfileForm extends Component {
   handleSubmit(event) {
     event.preventDefault()
 
+ //Review lengths name, phone and email
+
     if (this.state.name.length < 2)
     {
       return alert('Please fill in your name.')
-    }
-
-    if(this.state.email.length <2){
-      return alert('Please enter a valid email');
     }
 
     if(this.state.phone.length <6){
       return alert('Please enter a valid phone number');
     }
 
+    if(this.state.email.length <2){
+      return alert('Please enter a valid email');
+    }
+
+    if(this.state.phone.match(phoneformat)){
+      console.log('valid phone number');
+    }
+
+    // Check email and phone format
+
     var emailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; //Regular expression
-    if(this.state.email.match(emailformat))  { 
+    var phoneformat = /^[-+]?[0-9]+$/;  
+
+    console.log('email/phone verification');
+    if(this.state.email.match(emailformat) && this.state.phone.match(phoneformat))  { 
+      console.log('valid email, valid phone number')
       this.props.onProfileFormSubmit(this.state.name, this.state.email, this.state.phone)
     }
     else{
-      return alert('Please enter valid email.')
+      return alert('Please enter valid email/phone number (only numbers)')
     }
   }
 
