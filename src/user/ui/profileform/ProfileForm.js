@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+//import IPFSUploader from './IPFSUploader.js';
+
 
 class ProfileForm extends Component {
   constructor(props) {
@@ -80,6 +82,8 @@ class ProfileForm extends Component {
           <button type="submit" className="pure-button pure-button-primary">Update</button>
         </fieldset>
       </form>
+
+
     )
   }
 }
