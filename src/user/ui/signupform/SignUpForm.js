@@ -56,7 +56,7 @@ class SignUpForm extends Component {
     }
     else
     {
-      return alert('Please enter valid email/phone number (only numbers)');
+      return alert('Please enter valid email or phone number (only numbers)');
     }
   }
 
@@ -73,7 +73,7 @@ class SignUpForm extends Component {
           <span className="pure-form-message">This is a required field.</span>
           <br />
 
-         <label htmlFor="phone">Phone number</label>
+         <label htmlFor="phone">Phone number (XXXXXXXXXX)</label>
           <input id="phone" type="text" value={this.state.phone} onChange={this.onPhoneChange.bind(this)} placeholder="Phone" />
           <span className="pure-form-message">This is a required field.</span>
           <br />

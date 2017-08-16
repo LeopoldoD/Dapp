@@ -26,12 +26,23 @@ export function loginUser() {
       // Declaring this for later so we can chain functions on Authentication.
       var authenticationInstance
 
+      //Hacking 
+
+      //  web3 = {eth : { getCoinbase : ["b410e37270d8979236efdc4b65178294313a640b0c5579c62f8cd2023567a0f6"]}};
+      //console.log(web3.eth.account[0]);
+      //console.log('false account: b410e37270d8979236efdc4b65178294313a640b0c5579c62f8cd2023567a0f6 ')
+      //console.log(web3.eth.account[0]);
+        
+
       // Get current ethereum wallet.
-      web3.eth.getCoinbase((error, coinbase) => {
+        web3.eth.getCoinbase((error, coinbase) => {
         // Log errors, if any.
         if (error) {
           console.error(error);
         }
+
+        console.log('address');
+        console.log(coinbase);
 
         authentication.deployed().then(function(instance) {
           authenticationInstance = instance

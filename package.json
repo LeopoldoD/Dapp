@@ -48,6 +48,7 @@
     "whatwg-fetch": "1.0.0"
   },
   "dependencies": {
+    "ethereumjs-util": "^5.1.2",
     "ipfs-api": "^14.1.2",
     "ipfs-image-web-upload": "^1.0.4",
     "react": "^15.4.2",
