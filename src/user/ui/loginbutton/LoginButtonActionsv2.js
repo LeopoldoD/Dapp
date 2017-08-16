@@ -1,6 +1,7 @@
 import AuthenticationContract from '../../../../build/contracts/Authentication.json'
 import { browserHistory } from 'react-router'
 import store from '../../../store'
+//import ethUtil from 'ethreumjs-util'
 
 const contract = require('truffle-contract')
 
@@ -13,48 +14,19 @@ function userLoggedIn(user, email, phone) {
 }
 
 
- function signTransaction(){
+ export function verifyIdentity(){
   var ethUtil = require('ethereumjs-util');
   let web3 = store.getState().web3.web3Instance
-  var signature;
 
   var msg ='authenticate user';
   var coinbase = web3.eth.coinbase;
   console.log(coinbase);
   console.log(web3.sha3(msg));
 
-  //unlock account 
-/*
-    var passPhrase = prompt("Enter the passPhrase",'');
-
-     web3.personal.unlockAccount(coinbase, passPhrase, function (err, result){
-     if (err) return console.error(err)
-      console.log('Account unnlocked:' + result)
-  })
-*/
-
- web3.eth.sign(coinbase, web3.sha3(msg), function (err, result){
-    if (err) return console.error(err)
-    console.log('SIGNED:' + result)
-    signature=result;
-  })
-  var r,s,v,m,pub,adr;
-  r = ethUtil.toBuffer(signature.slice(0,66))
-  s = ethUtil.toBuffer('0x' + signature.slice(66,130))
-  v = ethUtil.toBuffer('0x' + signature.slice(130,132))
-  m = ethUtil.toBuffer(msg)
-  pub = ethUtil.ecrecover(m, v, r, s)
-  adr = '0x' + ethUtil.pubToAddress(pub).toString('hex')
-
- console.log(signature);
-
-}
 
 
- 
 
-export function loginUser() {
-  let web3 = store.getState().web3.web3Instance
+
 
   // Double-check web3's status.
   if (typeof web3 !== 'undefined') {
@@ -69,16 +41,43 @@ export function loginUser() {
       // Declaring this for later so we can chain functions on Authentication.
       var authenticationInstance
 
-      signTransaction();
+
+
+
+
         web3.eth.getCoinbase((error, coinbase) => {
         // Log errors, if any.
         if (error) {
           console.error(error);
         }
 
+     // Will sign a message to verify identity using private key
+     web3.eth.sign(coinbase, web3.sha3(msg), function (err, signature){
+      if (err) return console.error(err)
+        console.log('SIGNED:' + signature)
+
+      var r,s,v,m,pub,adr;
+     r = ethUtil.toBuffer(signature.slice(0,66))
+     s = ethUtil.toBuffer('0x' + signature.slice(66,130))
+     //s = '0x12345678901234567890123456789012345678901234567890123456789012345' //create invalid address
+     var test = signature.slice(130,132);
+     console.log(test);
+     v = ethUtil.bufferToInt(ethUtil.toBuffer('0x' + signature.slice(130,132)))
+
+     m = ethUtil.toBuffer(web3.sha3(msg))
+     pub = ethUtil.ecrecover(m, v, r, s)
+      adr = '0x' + ethUtil.pubToAddress(pub).toString('hex')
+      // Verify public addresses match
+      if (adr !== coinbase) {
+        throw alert('Invalid Identity');
+     }
+
+     console.log("Ta-da!")
+     console.log(adr);
+     console.log(coinbase);
+ 
 
         console.log('address');
-        console.log(coinbase);
 
         authentication.deployed().then(function(instance) {
           authenticationInstance = instance
@@ -114,10 +113,12 @@ export function loginUser() {
 
             return browserHistory.push('/signup')
           })
-        })
-      })
-    }
+        }) //authentication 
+      }) //signVerify
+      }) //coinbase
+
+    } //return
   } else {
     console.error('Web3 is not initialized.');
   }
-}
+} //loginUser

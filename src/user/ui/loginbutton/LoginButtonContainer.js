@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import LoginButton from './LoginButton'
-import { loginUser } from './LoginButtonActionsv2'
+import { verifyIdentity } from './LoginButtonActionsv2'
 
 const mapStateToProps = (state, ownProps) => {
   return {}
@@ -11,7 +11,7 @@ const mapDispatchToProps = (dispatch) => {
     onLoginUserClick: (event) => {
       event.preventDefault();
 
-      dispatch(loginUser())
+      dispatch(verifyIdentity())
     }
   }
 }
