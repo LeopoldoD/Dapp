@@ -45,14 +45,14 @@ function userLoggedIn(user, email, phone) {
 
 
 
-        web3.eth.getCoinbase((error, coinbase) => {
+        web3.eth.getCoinbase((error, pubaddress) => {
         // Log errors, if any.
         if (error) {
           console.error(error);
         }
 
      // Will sign a message to verify identity using private key
-     web3.eth.sign(coinbase, web3.sha3(msg), function (err, signature){
+     web3.eth.sign(pubaddress, web3.sha3(msg), function (err, signature){
       if (err) return console.error(err)
         console.log('SIGNED:' + signature)
 
@@ -68,13 +68,13 @@ function userLoggedIn(user, email, phone) {
      pub = ethUtil.ecrecover(m, v, r, s)
       adr = '0x' + ethUtil.pubToAddress(pub).toString('hex')
       // Verify public addresses match
-      if (adr !== coinbase) {
+      if (adr !== pubaddress) {
         throw alert('Invalid Identity');
      }
 
      console.log("Ta-da!")
      console.log(adr);
-     console.log(coinbase);
+     console.log(pubaddress);
  
 
         console.log('address');
@@ -84,7 +84,7 @@ function userLoggedIn(user, email, phone) {
           console.log('attempting login');
        
           // Attempt to login user.
-          authenticationInstance.login3({from: coinbase})
+          authenticationInstance.login3({from: pubaddress})
           .then(function(result) {
             // If no error, login user.
             console.log(result);
@@ -109,13 +109,13 @@ function userLoggedIn(user, email, phone) {
           })
           .catch(function(result) {
             // If error, go to signup page.
-            console.error('Wallet ' + coinbase + ' does not have an account!')
+            console.error('Wallet ' + pubaddress + ' does not have an account!')
 
             return browserHistory.push('/signup')
           })
         }) //authentication 
       }) //signVerify
-      }) //coinbase
+      }) //getcoinbase
 
     } //return
   } else {
