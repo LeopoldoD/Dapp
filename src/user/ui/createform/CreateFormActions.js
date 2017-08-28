@@ -1,23 +1,27 @@
 import AuthenticationContract from '../../../../build/contracts/Authentication.json'
 import { browserHistory } from 'react-router'
 import store from '../../../store'
+import {startDatabase, helloWorld} from '../../../database/ipfs'
 
 const contract = require('truffle-contract')
 
-export const USER_LOGGED_IN = 'USER_LOGGED_IN'
+/*export const USER_LOGGED_IN = 'USER_LOGGED_IN'
 function userLoggedIn(user) {
   return {
     type: USER_LOGGED_IN,
     payload: user
   }
 }
-
+*/
 
 export function createRide(address, address2) {
   let web3 = store.getState().web3.web3Instance
   console.log('Create a new ride');
   console.log(address);
-//  /*
+
+  helloWorld();
+  startDatabase();
+/*
   // Double-check web3's status.
   if (typeof web3 !== 'undefined') {
 
@@ -70,5 +74,5 @@ export function createRide(address, address2) {
   } else {
     console.error('Web3 is not initialized.');
   }
-  //*/
+  */
 }
