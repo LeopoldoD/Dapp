@@ -49,9 +49,13 @@
   },
   "dependencies": {
     "ethereumjs-util": "^5.1.2",
+    "ipfs": "^0.25.2",
     "ipfs-api": "^14.1.2",
     "ipfs-image-web-upload": "^1.0.4",
+    "moment": "^2.18.1",
+    "orbit-db": "^0.17.3",
     "react": "^15.4.2",
+    "react-datepicker": "^0.53.0",
     "react-dom": "^15.4.2",
     "react-images-uploader": "^1.1.0",
     "react-places-autocomplete": "^5.3.1",

@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
 import SearchRide from '../../../images/SearchRide.png'
 import CreateRide from '../../../images/CreateRide.png'
-import SearchButtonContainer from '../../user/ui/searchbutton/SearchButtonContainer'
-import SearchButtonActions from '../../user/ui/searchbutton/SearchButtonActions'
-// import CreateButtonContainer from '../../user/ui/createbutton/CreateButtonContainer'
-import { Link } from 'react-router'
+//import { Link } from 'react-router'
 
 class Dashboard extends Component {
   constructor(props, { authData }) {
@@ -14,8 +11,6 @@ class Dashboard extends Component {
   
   handleSearch= function(e){
       this.props.router.push('/search');
-      //console.log(SearchButtonActions.SearchRide());
-      //SearchButtonActions.SearchRide();
   };
 
     handleCreate= function(e){

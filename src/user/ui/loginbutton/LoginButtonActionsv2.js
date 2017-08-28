@@ -24,10 +24,6 @@ function userLoggedIn(user, email, phone) {
   console.log(web3.sha3(msg));
 
 
-
-
-
-
   // Double-check web3's status.
   if (typeof web3 !== 'undefined') {
 
@@ -42,9 +38,6 @@ function userLoggedIn(user, email, phone) {
       var authenticationInstance
 
 
-
-
-
         web3.eth.getCoinbase((error, pubaddress) => {
         // Log errors, if any.
         if (error) {
@@ -52,6 +45,7 @@ function userLoggedIn(user, email, phone) {
         }
 
      // Will sign a message to verify identity using private key
+     /*
      web3.eth.sign(pubaddress, web3.sha3(msg), function (err, signature){
       if (err) return console.error(err)
         console.log('SIGNED:' + signature)
@@ -78,7 +72,7 @@ function userLoggedIn(user, email, phone) {
  
 
         console.log('address');
-
+*/
         authentication.deployed().then(function(instance) {
           authenticationInstance = instance
           console.log('attempting login');
@@ -114,7 +108,7 @@ function userLoggedIn(user, email, phone) {
             return browserHistory.push('/signup')
           })
         }) //authentication 
-      }) //signVerify
+//      }) //signVerify
       }) //getcoinbase
 
     } //return

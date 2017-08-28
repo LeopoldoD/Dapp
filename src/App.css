@@ -72,3 +72,27 @@ code {
   height: 16px;
   margin-right: 10px;
 }
+
+/* Styles Search/Create Rides */
+
+.container2{
+    position: fixed;
+    list-style-type: none;
+    margin: 0;
+    padding: 100;
+    overflow: hidden;
+    background-color: #ffffff;
+    height:500px;
+}
+.container2 li{
+    list-style-type:none;
+    float: left;
+    padding: 0px 80px 0px 0px;
+}
+
+.container2 li.two{
+    position: fixed;
+    list-style-type:none;
+    float: left;
+    padding: 0px 80px 0px 0px;
+}
