@@ -1,7 +1,7 @@
-import AuthenticationContract from '../../../../build/contracts/Authentication.json'
+import RideContract from '../../../../build/contracts/RideContract.json'
 import { browserHistory } from 'react-router'
 import store from '../../../store'
-import {startDatabase, helloWorld} from '../../../database/ipfs'
+import {ipfs} from '../../../database/ipfs'
 
 const contract = require('truffle-contract')
 
@@ -13,46 +13,71 @@ function userLoggedIn(user) {
   }
 }
 */
+//var db;
+//let rideID = 0;
 
-export function createRide(address, address2) {
-  let web3 = store.getState().web3.web3Instance
+export function createRide(address, address2, seats, startDate, rideTime) {
+ // let web3 = store.getState().web3.web3Instance
   console.log('Create a new ride');
   console.log(address);
+  console.log(seats);
+  console.log(startDate);
+  console.log(rideTime);
 
-  helloWorld();
-  startDatabase();
-/*
+//  ipfs('createnewride', address, address2, startDate, rideTime, seats);
+
+  var ethUtil = require('ethereumjs-util');
+  let web3 = store.getState().web3.web3Instance
+
+  var coinbase = web3.eth.coinbase;
+  console.log(coinbase);
+
+
   // Double-check web3's status.
   if (typeof web3 !== 'undefined') {
 
     return function(dispatch) {
-      // Using truffle-contract we create the authentication object.
-      const authentication = contract(AuthenticationContract)
-      authentication.setProvider(web3.currentProvider)
+      // Using truffle-contract we create the RideContract object.
+      const ride = contract(RideContract)
+      ride.setProvider(web3.currentProvider)
+      console.log('provider:');
+      console.log(web3.currentProvider);
 
       // Declaring this for later so we can chain functions on Authentication.
-      var authenticationInstance
+      var rideInstance
 
-      // Get current ethereum wallet.
-      web3.eth.getCoinbase((error, coinbase) => {
+
+        web3.eth.getCoinbase((error, pubaddress) => {
         // Log errors, if any.
         if (error) {
           console.error(error);
         }
 
-        authentication.deployed().then(function(instance) {
-          authenticationInstance = instance
 
+        ride.deployed().then(function(instance) {
+          rideInstance = instance
+
+
+          console.log('attempting create');
+       
           // Attempt to login user.
-          authenticationInstance.login({from: coinbase})
+          rideInstance.createride2(address, address2, startDate, rideTime, seats, 500, {from: pubaddress})
           .then(function(result) {
             // If no error, login user.
-            var userName = web3.toUtf8(result)
+            console.log(result);
+            //var rideID = web3.toDecimal(result[0]);
+            //var from = web3.toUtf8(result[1]);
+            //console.log(rideID);
+            //console.log(from);
 
-            dispatch(userLoggedIn({"name": userName}))
+            //var rideFrom = web3.toUtf8(result[1]);
+            //var rideFrom = web3.toUtf8(result[2]);
+            //var rideDate = web3.toUtf8(result[3]);
+            //var rideTime = web3.toUtf8(result[4]);
+            //var rideSeats = web3.toDecimal(result[5]);
+            //var rideCost = web3.toDecimal(result[6]);
+            
 
-            // Used a manual redirect here as opposed to a wrapper.
-            // This way, once logged in a user can still access the home page.
             var currentLocation = browserHistory.getCurrentLocation()
 
             if ('redirect' in currentLocation.query)
@@ -60,19 +85,36 @@ export function createRide(address, address2) {
               return browserHistory.push(decodeURIComponent(currentLocation.query.redirect))
             }
 
-            return browserHistory.push('/dashboard')
+            return browserHistory.push('/results')
           })
           .catch(function(result) {
             // If error, go to signup page.
-            console.error('Wallet ' + coinbase + ' does not have an account!')
+            console.error('Wallet ' + pubaddress + ' does not have an account!')
 
             return browserHistory.push('/signup')
           })
-        })
-      })
-    }
+
+         
+
+      
+
+
+
+
+        }) //create ride 
+
+
+
+
+
+
+//      }) //signVerify
+      }) //getcoinbase
+
+    } //return
   } else {
     console.error('Web3 is not initialized.');
   }
-  */
-}
+  
+} 
+

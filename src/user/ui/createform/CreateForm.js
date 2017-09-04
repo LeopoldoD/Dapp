@@ -4,6 +4,13 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 
+import 'rc-time-picker/assets/index.css';
+import TimePicker from 'rc-time-picker';
+//const format = 'hh:mm a';
+//const now = moment().hour(0).minute(0);
+
+
+
 class CreateRide extends Component {
   constructor(props) {
     super(props)
@@ -14,7 +21,9 @@ class CreateRide extends Component {
       geocodeResults2: null,
       loading: false,
       loading2: false,
-      startDate: moment()
+      seats: this.props.seats,
+      startDate: moment(),
+      rideTime: this.props.rideTime
     }
     this.handleSelect = this.handleSelect.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -23,6 +32,8 @@ class CreateRide extends Component {
     this.renderGeocodeFailure = this.renderGeocodeFailure.bind(this)
     this.renderGeocodeSuccess = this.renderGeocodeSuccess.bind(this)
     this.handleDate = this.handleDate.bind(this)
+    this.handleTime = this.handleTime.bind(this)
+    //this.handeSeats = this.handleSeats.bind(this)
   }
 
   handleSelect(address) {
@@ -48,21 +59,6 @@ class CreateRide extends Component {
         })
       })
 
-    /* NOTE: Using callback (Deprecated version) */
-    // geocodeByAddress(address,  (err, { lat, lng }) => {
-    //   if (err) {
-    //     console.log('Oh no!', err)
-    //     this.setState({
-    //       geocodeResults: this.renderGeocodeFailure(err),
-    //       loading: false
-    //     })
-    //   }
-    //   console.log(`Yay! got latitude and longitude for ${address}`, { lat, lng })
-    //   this.setState({
-    //     geocodeResults: this.renderGeocodeSuccess(lat, lng),
-    //     loading: false
-    //   })
-    // })
   }
 
     handleSelect2(address2) {
@@ -87,22 +83,6 @@ class CreateRide extends Component {
           loading2: false
         })
       })
-
-    /* NOTE: Using callback (Deprecated version) */
-    // geocodeByAddress(address,  (err, { lat, lng }) => {
-    //   if (err) {
-    //     console.log('Oh no!', err)
-    //     this.setState({
-    //       geocodeResults: this.renderGeocodeFailure(err),
-    //       loading2: false
-    //     })
-    //   }
-    //   console.log(`Yay! got latitude and longitude for ${address}`, { lat, lng })
-    //   this.setState({
-    //     geocodeResults: this.renderGeocodeSuccess(lat, lng),
-    //     loading2: false
-    //   })
-    // })
   }
 
   handleChange(address) {
@@ -112,19 +92,32 @@ class CreateRide extends Component {
     })
   }
 
-    handleChange2(address2) {
+  handleChange2(address2) {
     this.setState({
       address2,
       geocodeResults2: null
     })
   }
 
-    handleDate(date) {
+  handleSeats(event) {
+    console.log('handleseats');
+    this.setState({
+      seats: event.target.value
+    })
+  }
+
+  handleDate(date) {
     this.setState({
       startDate: date
     })
   }
 
+  handleTime(time) {
+    console.log('handle time');
+    this.setState({
+      rideTime: time
+    })
+  }
 
   handleSubmit(event) {
     event.preventDefault()
@@ -140,7 +133,20 @@ class CreateRide extends Component {
       return alert('Please enter a valid destination');
     }
 
-      this.props.onCreateFormSubmit(this.state.address, this.state.address2)
+    if(this.state.seats == null || this.state.seats == 0 || this.state.seats>5){
+      return alert('Invalid number of seats');
+    }
+
+    if(this.state.rideTime == null || typeof (this.state.rideTime) == "undefined"){
+      return alert('Invalid date');
+    }
+
+    console.log(this.state.rideTime);
+    // Change date to human readable format MMM-DD-YYY i.e. SEP-30-2017 
+    this.state.startDate = moment(this.state.startDate).format('MMM-DD-YYYY'); 
+    this.state.rideTime = moment(this.state.rideTime).format('HH:mm');
+
+      this.props.onCreateFormSubmit(this.state.address, this.state.address2, this.state.seats, this.state.startDate, this.state.rideTime)
 
   }
 
@@ -199,23 +205,19 @@ class CreateRide extends Component {
       name: 'Demo__input2',
       id: "my-input-id2",
     }
-    var divStyle = {
-        float: 'left',
-        color: 'black',
-        display: 'inline-block',
-        padding: '30px',
 
+    const inputTime = {
+      value: this.state.rideTime,
+      onChange: this.handleTime,
     }
 
 
     return (
 
 
-
-
-
       <form className="pure-form" onSubmit={this.handleSubmit.bind(this)}>
       <fieldset>
+          
          <PlacesAutocomplete
             onSelect={this.handleSelect}
             autocompleteItem={AutocompleteItem}
@@ -239,14 +241,26 @@ class CreateRide extends Component {
           {!this.state.loading2 && this.state.geocodeResults ?
             <div className='geocoding-results'>{this.state.geocodeResults2}</div> :
           null}
-       
 
+          <label htmlFor="seats">Number of Seats (1-5)</label>
+          <input id="seats" type="text" value={this.state.seats} onChange={this.handleSeats.bind(this)} placeholder="#Seats"/>
+          <br />
+
+        <label htmlFor="date">Select a Date </label>
          <DatePicker
             selected={this.state.startDate}
             onChange={this.handleDate}
             minDate={moment()}
           />
 
+          <TimePicker
+            showSecond={false}
+            style={{ width: 100 }}
+            className="xxx"
+            placeholder="Enter time"
+            value ={this.state.rideTime}
+            onChange ={this.handleTime}
+          />
          <button type="submit" className="pure-button pure-button-primary">Create</button>
         </fieldset> 
       </form>

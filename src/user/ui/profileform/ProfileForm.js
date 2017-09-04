@@ -8,7 +8,7 @@ class ProfileForm extends Component {
 
     this.state = {
       name: this.props.name,
-      email: this. props.email,
+      email: this.props.email,
       phone: this.props.phone
     }
   }

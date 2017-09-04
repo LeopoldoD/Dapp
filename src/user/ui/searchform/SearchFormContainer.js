@@ -8,10 +8,9 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onSearchFormSubmit: (address,address2) => {
+    onSearchFormSubmit: (address,address2, startDate) => {
       event.preventDefault();
-      console.log('search');
-      dispatch(searchRide(address, address2))
+      dispatch(searchRide(address, address2, startDate))
     }
   }
 }

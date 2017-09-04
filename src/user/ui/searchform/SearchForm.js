@@ -47,22 +47,6 @@ class SearchForm extends Component {
           loading: false
         })
       })
-
-    /* NOTE: Using callback (Deprecated version) */
-    // geocodeByAddress(address,  (err, { lat, lng }) => {
-    //   if (err) {
-    //     console.log('Oh no!', err)
-    //     this.setState({
-    //       geocodeResults: this.renderGeocodeFailure(err),
-    //       loading: false
-    //     })
-    //   }
-    //   console.log(`Yay! got latitude and longitude for ${address}`, { lat, lng })
-    //   this.setState({
-    //     geocodeResults: this.renderGeocodeSuccess(lat, lng),
-    //     loading: false
-    //   })
-    // })
   }
 
     handleSelect2(address2) {
@@ -87,22 +71,6 @@ class SearchForm extends Component {
           loading2: false
         })
       })
-
-    /* NOTE: Using callback (Deprecated version) */
-    // geocodeByAddress(address,  (err, { lat, lng }) => {
-    //   if (err) {
-    //     console.log('Oh no!', err)
-    //     this.setState({
-    //       geocodeResults: this.renderGeocodeFailure(err),
-    //       loading2: false
-    //     })
-    //   }
-    //   console.log(`Yay! got latitude and longitude for ${address}`, { lat, lng })
-    //   this.setState({
-    //     geocodeResults: this.renderGeocodeSuccess(lat, lng),
-    //     loading2: false
-    //   })
-    // })
   }
 
   handleChange(address) {
@@ -140,7 +108,8 @@ class SearchForm extends Component {
       return alert('Please enter a valid destination');
     }
 
-      this.props.onSearchFormSubmit(this.state.address, this.state.address2)
+      this.state.startDate = moment(this.state.startDate).format('MMM-DD-YYYY');  //Format Date
+      this.props.onSearchFormSubmit(this.state.address, this.state.address2, this.state.startDate)
 
   }
 
@@ -199,13 +168,7 @@ class SearchForm extends Component {
       name: 'Demo__input2',
       id: "my-input-id2",
     }
-    var divStyle = {
-        float: 'left',
-        color: 'black',
-        display: 'inline-block',
-        padding: '30px',
 
-    };
 
     return (
 
