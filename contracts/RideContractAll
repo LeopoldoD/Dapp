@@ -1,0 +1,196 @@
+pragma solidity ^0.4.2;
+
+import './zeppelin/lifecycle/Killable.sol';
+
+contract RideContract is Killable{
+  struct Ride {
+    uint id;
+    bytes32 from;
+    bytes32 to;
+    bytes32 date;
+    bytes32 time;
+    uint seats;
+    uint cost;
+  }
+
+  uint[] resultsid;
+  uint searchid;
+  uint rideID;
+  uint[] rideinstances;
+  uint[] resultscount;
+
+  mapping (uint => Ride) private rides; 
+
+   function returnride(uint rideID) constant returns (uint, bytes32, bytes32, bytes32, bytes32, uint, uint){
+    // Check if rideID exists.
+
+    return (rides[rideID].id, rides[rideID].from, rides[rideID].to, rides[rideID].date, rides[rideID].time, rides[rideID].seats, rides[rideID].cost);
+
+   }
+
+   function getContract() constant returns (address){
+    return this;
+    }
+
+   function getresultsid() constant returns (uint []){
+    //uint[] resultsid;
+    resultsid.push(rides[0].id);
+    resultsid.push(rides[1].id);
+
+    return (resultsid);
+   }
+
+
+
+    function getresultsid2(bytes32 from, bytes32 to, bytes32 date) constant returns (uint[]){
+    //uint[] resultsid;
+    uint iter;
+        for (iter = 0; iter < 3; iter++){
+            if (rides[iter].from == from && rides[iter].to == to && rides[iter].date == date){
+            resultsid.push(rides[iter].id);
+            }
+        }
+    return (resultsid);
+   }
+
+
+    function createnewride(bytes32 from, bytes32 to, bytes32 date, bytes32 time, uint seats, uint cost) payable returns (uint) {
+    // Check if parameters exist.
+
+    if (from == 0x0 || to == 0x0 || date== 0x0 || time == 0x0 || seats == 0x0 || cost == 0x0)
+    {
+        throw;
+    }
+    rideID++;
+    rides[rideID-1].id = rideID;
+    rides[rideID-1].from =from;
+    rides[rideID-1].to = to;
+    rides[rideID-1].date = date;
+    rides[rideID-1].time = time;
+    rides[rideID-1].seats = seats;
+    rides[rideID-1].cost = cost;
+    rideinstances.push(rideID);
+
+    return (rideID);
+   }
+
+   function getlength() constant returns (uint){
+    uint total;
+    total = rideID;
+    return (total);
+   }
+
+   function getrideinstances() constant returns (uint){
+    uint iter;
+        for (iter = 0; iter < rideinstances.length; iter++){
+            return (rideinstances[iter]);
+        }
+    
+   }
+
+   function createsearchid() payable{
+    searchid++;
+   }
+
+   function getsearchid() constant returns (uint){
+    return searchid;
+   }
+
+
+
+   function countresults(bytes32 from, bytes32 to, bytes32 date, uint id) constant returns (uint, uint[], uint, uint){
+    uint[] memory results = new uint[](10);
+    uint searchid;
+    uint total;
+    uint iter;
+    uint count;
+    uint tempid;
+
+    total = rideID;
+    searchid = id;
+
+        for (iter = 0; iter < rideinstances.length; iter++){
+         if (rides[iter].from == from && rides[iter].to == to && rides[iter].date == date){
+               tempid = rides[iter].id;
+               results[count] = tempid;
+               count++;
+         }
+        }
+     return (count, results, total, searchid);
+    }
+
+   function countresultstest(bytes32 from, bytes32 to, bytes32 date) constant returns (uint, uint[], uint){
+    uint[] memory results = new uint[](10);
+    uint total;
+    uint iter;
+    uint count;
+    uint tempid;
+
+    total = rideID;
+
+        for (iter = 0; iter < rideinstances.length; iter++){
+         if (rides[iter].from == from && rides[iter].to == to && rides[iter].date == date){
+               tempid = rides[iter].id;
+               results[count] = tempid;
+               count++;
+         }
+        }
+     return (count, results, total);
+    }
+
+
+
+    event CalledCount(
+        uint count, uint[] resids, uint iter, uint total
+    );
+
+   function countresults2(bytes32 from, bytes32 to, bytes32 date) payable returns (uint, uint[], uint, uint){
+
+    uint[] x = resultscount;
+    uint iter;
+    uint count;
+
+        for (iter = 0; iter < rideinstances.length; iter++){
+         if (rides[iter].from == from && rides[iter].to == to && rides[iter].date == date){
+               x.push(rides[iter].id);
+               count++;
+         }
+        }
+
+     CalledCount(count, x, iter, rideinstances.length);
+     // Clean array
+        for (iter = 0; iter < count; iter++){
+               delete x[iter];
+        }
+
+     return (count, x, iter, rideinstances.length);
+    }
+
+   function searchforride(bytes32 from, bytes32 to, bytes32 date) constant returns (uint, bytes32, bytes32, bytes32, bytes32, uint, uint){
+    uint[] memory results = new uint[](10);
+    uint iter;
+    uint count;
+    uint tempid;
+
+        for (iter = 0; iter < rideinstances.length; iter++){
+         if (rides[iter].from == from && rides[iter].to == to && rides[iter].date == date){
+               tempid = rides[iter].id;
+               results[count] = tempid;
+               count++;
+         }
+        }
+
+    uint iter2 =0;
+    uint iter3;
+        for (iter2 = 0; iter2 < rideinstances.length; iter2++){
+            for (iter3 = 0; iter3 < count+2; iter3++){
+              if (rides[iter2].id == results[iter3]){
+                    return (rides[iter2].id, rides[iter2].from, rides[iter2].to, rides[iter2].date, rides[iter2].time, rides[iter2].seats, rides[iter2].cost);
+             }
+            }
+       
+        }
+
+    }
+    
+}

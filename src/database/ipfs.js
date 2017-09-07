@@ -1,6 +1,5 @@
 //var db;
 var db2;	
-var results;
 let rideID = 1;
 
 export function ipfs(option, address, address2, startDate, rideTime, seats) {

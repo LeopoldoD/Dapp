@@ -61,7 +61,7 @@ export function createRide(address, address2, seats, startDate, rideTime) {
           console.log('attempting create');
        
           // Attempt to login user.
-          rideInstance.createride2(address, address2, startDate, rideTime, seats, 500, {from: pubaddress})
+          rideInstance.createnewride(address, address2, startDate, rideTime, seats, 500, {from: pubaddress})
           .then(function(result) {
             // If no error, login user.
             console.log(result);
