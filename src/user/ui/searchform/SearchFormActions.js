@@ -81,11 +81,34 @@ export function searchRide(address, address2, startDate) {
            		 for (var i=0; i< count; i++){
            			console.log(searchresults[i]);
            		}
-		})
+
+          for (var i=0;i<searchresults.length;i++){
+
+          rideInstance.returnride(searchresults[i]-1, {from: pubaddress})
+          .then(function(result){
+            console.log(result);
+            var rideID2 = web3.toDecimal(result[0]);
+            var rideFrom = web3.toUtf8(result[1]);
+            var rideTo = web3.toUtf8(result[2]);
+            var rideDate = web3.toUtf8(result[3]);
+            var rideTime = web3.toUtf8(result[4]);
+            var rideSeats = web3.toDecimal(result[5]);
+            var rideCost = web3.toDecimal(result[6]);
+  
+            console.log(rideID2);
+            console.log(rideFrom);
+            console.log(rideTo);
+            console.log(rideDate);
+            console.log(rideTime);
+            console.log(rideSeats);
+            console.log(rideCost);
+        })
+        }      
+	     	})
         })
 
 /*
-          rideInstance.returnride(test, {from: pubaddress})
+          rideInstance.returnride(searchid-1, {from: pubaddress})
           .then(function(result){
             console.log(result);
             var rideID2 = web3.toDecimal(result[0]);
