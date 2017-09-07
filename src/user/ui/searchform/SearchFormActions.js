@@ -1,7 +1,7 @@
 import RideContract from '../../../../build/contracts/RideContract.json'
 import { browserHistory } from 'react-router'
 import store from '../../../store'
-import {ipfs} from '../../../database/ipfs'
+//import {ipfs} from '../../../database/ipfs'
 const contract = require('truffle-contract')
 
 export function searchRide(address, address2, startDate) {
@@ -41,62 +41,6 @@ export function searchRide(address, address2, startDate) {
           rideInstance = instance
  	
            console.log('attempting results');
-
-
-        var count, ids, iter, total;
-
-    //    var contractaddress = rideInstance.getContract({from: pubaddress});
-     //	   console.log(contractaddress);
- 
-
-
- /*    
- 		var exampleEvent = rideInstance.CalledCount({fromBlock: 0, toBlock: 'latest'});
-		exampleEvent.watch(function(err, result) {
-  		if (err) {
-    		console.log(err)
-    		return;
-  		}
-  		count = result.args.count;
-  		ids = result.args.resids;
-  		iter = result.args.iter;
-  		total = result.args.total;
-  		console.log(result);
-
-        console.log(web3.toDecimal(count));
-  		console.log(web3.toDecimal(iter));
-  		console.log(web3.toDecimal(total));
-  		console.log('results ids: ');
-  		console.log(ids.length);
-  		for (var i=0; i< ids.length; i++){
-  			console.log(web3.toDecimal(ids[i]));
-  		}
-  
-})
-
-*/
-
-/*
-        rideInstance.countresults2(address, address2, startDate, {from: pubaddress})
-          .then(function(result){
-            console.log(result);
-*/
-
-
-
-            /*
-            var rideID = web3.toDecimal(result[0]);
-            var rideID2 = web3.toDecimal(result[1][0]);
-            var rideID3 = web3.toDecimal(result[1][1]);
-            var rideID4 = web3.toDecimal(result[2]);
-            var rideID5 = web3.toDecimal(result[3]);
-            console.log(rideID);
-            console.log(rideID2);
-            console.log(rideID3);
-            console.log(rideID4);
-            console.log(rideID5);
-       
-*/
 
 //Works getlength!
 /*
@@ -144,42 +88,6 @@ export function searchRide(address, address2, startDate) {
 	
 		})
         })
-
-
-
-/*
-		rideInstance.getresultsid(address, address2, startDate, {from: pubaddress})
-          .then(function(result2){
-            console.log(result2);
-            var rideID2 = web3.toDecimal(result2[0][0]);
-            var rideID3 = web3.toDecimal(result2[0][1]);
-            //var rideID4 = web3.toDecimal(result2[0][2]);
-  
-            console.log(rideID2);
-            console.log(rideID3);
-            //console.log(rideID4);
-*/
-
-/*
-          rideInstance.searchforride(address, address2, startDate, {from: pubaddress})
-          .then(function(result){
-            console.log(result);
-            var rideID2 = web3.toDecimal(result[0]);
-            var rideFrom = web3.toUtf8(result[1]);
-            var rideTo = web3.toUtf8(result[2]);
-            var rideDate = web3.toUtf8(result[3]);
-            var rideTime = web3.toUtf8(result[4]);
-            var rideSeats = web3.toDecimal(result[5]);
-            var rideCost = web3.toDecimal(result[6]);
-  
-            console.log(rideID2);
-            console.log(rideFrom);
-            console.log(rideTo);
-            console.log(rideDate);
-            console.log(rideTime);
-            console.log(rideSeats);
-            console.log(rideCost);
-*/
 
 /*
           rideInstance.returnride(test, {from: pubaddress})

@@ -9,8 +9,6 @@ import TimePicker from 'rc-time-picker';
 //const format = 'hh:mm a';
 //const now = moment().hour(0).minute(0);
 
-
-
 class CreateRide extends Component {
   constructor(props) {
     super(props)
@@ -22,6 +20,7 @@ class CreateRide extends Component {
       loading: false,
       loading2: false,
       seats: this.props.seats,
+      cost: this.props.cost,
       startDate: moment(),
       rideTime: this.props.rideTime
     }
@@ -106,6 +105,13 @@ class CreateRide extends Component {
     })
   }
 
+  handleCost(event) {
+    console.log('handlecost');
+    this.setState({
+      cost: event.target.value
+    })
+  }
+
   handleDate(date) {
     this.setState({
       startDate: date
@@ -141,12 +147,15 @@ class CreateRide extends Component {
       return alert('Invalid date');
     }
 
-    console.log(this.state.rideTime);
+    if(this.state.cost == null || this.state.cost == 0){
+      return alert('Invalid cost');
+    }
+
     // Change date to human readable format MMM-DD-YYY i.e. SEP-30-2017 
     this.state.startDate = moment(this.state.startDate).format('MMM-DD-YYYY'); 
     this.state.rideTime = moment(this.state.rideTime).format('HH:mm');
 
-      this.props.onCreateFormSubmit(this.state.address, this.state.address2, this.state.seats, this.state.startDate, this.state.rideTime)
+      this.props.onCreateFormSubmit(this.state.address, this.state.address2, this.state.seats, this.state.startDate, this.state.rideTime, this.state.cost)
 
   }
 
@@ -214,7 +223,6 @@ class CreateRide extends Component {
 
     return (
 
-
       <form className="pure-form" onSubmit={this.handleSubmit.bind(this)}>
       <fieldset>
           
@@ -244,6 +252,10 @@ class CreateRide extends Component {
 
           <label htmlFor="seats">Number of Seats (1-5)</label>
           <input id="seats" type="text" value={this.state.seats} onChange={this.handleSeats.bind(this)} placeholder="#Seats"/>
+          <br />
+
+          <label htmlFor="cost">Desired gas retribution (ETH)</label>
+          <input id="cost" type="text" value={this.state.cost} onChange={this.handleCost.bind(this)} placeholder="Cost"/>
           <br />
 
         <label htmlFor="date">Select a Date </label>

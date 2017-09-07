@@ -8,9 +8,9 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onCreateFormSubmit: (address,address2, seats, startDate, rideTime) => {
+    onCreateFormSubmit: (address,address2, seats, startDate, rideTime, cost) => {
       event.preventDefault();
-      dispatch(createRide(address, address2, seats, startDate, rideTime))
+      dispatch(createRide(address, address2, seats, startDate, rideTime, cost))
     }
   }
 }
