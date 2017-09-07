@@ -52,40 +52,35 @@ export function searchRide(address, address2, startDate) {
             console.log(longitud);
 */
 	var searchid;
+  var searchresults = new Array;
 
 		rideInstance.createsearchid({from: pubaddress})
           .then(function(result){
             console.log(result);
 
         rideInstance.getsearchid({from: pubaddress})
-           .then(function(result3){
-            console.log(result3);
-            var searchid = web3.toDecimal(result3);
-            console.log(searchid);
-
-		rideInstance.countresults(address, address2, startDate, searchid, {from: pubaddress})
-          .then(function(result2){
+           .then(function(result2){
             console.log(result2);
-            var rideID2 = web3.toDecimal(result2[0]);
-            var rideID5 = web3.toDecimal(result2[2]);
-            var rideID6 = web3.toDecimal(result2[3]);
-            console.log('results: '+rideID2);
-            console.log('records: '+rideID5);
-            console.log('searchid: '+rideID6);
-            
-            var searchresults = new Array;
+            var searchid = web3.toDecimal(result2);
+            console.log('getsearchid: '+searchid);
 
-           		for (var i=0; i< rideID2; i++){
-           			searchresults.push(web3.toDecimal(result2[1][i]));
-           			//console.log(searchresults[i]);
+		    rideInstance.countresults(address, address2, startDate, searchid, {from: pubaddress})
+          .then(function(result3){
+            console.log(result3);
+            var count = web3.toDecimal(result3[0]);
+            var total = web3.toDecimal(result3[2]);
+            var searchID = web3.toDecimal(result3[3]);
+            console.log('results: '+count);
+            console.log('records: '+total);
+            console.log('searchid: '+searchID);
+
+           		for (var i=0; i< count; i++){
+           			searchresults.push(web3.toDecimal(result3[1][i]));
            		}
 
-           		 for (var i=0; i< rideID2; i++){
+           		 for (var i=0; i< count; i++){
            			console.log(searchresults[i]);
-           			//console.log(searchresults[i]);
            		}
-
-	
 		})
         })
 
