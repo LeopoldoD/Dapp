@@ -4,6 +4,8 @@ import store from '../../../store'
 //import {ipfs} from '../../../database/ipfs'
 const contract = require('truffle-contract')
 
+var results = new Array();
+
 export function searchRide(address, address2, startDate) {
 
   console.log('Print search ride results');
@@ -94,7 +96,10 @@ export function searchRide(address, address2, startDate) {
             var rideTime = web3.toUtf8(result4[4]);
             var rideSeats = web3.toDecimal(result4[5]);
             var rideCost = web3.toDecimal(result4[6]);
-  
+
+            var res = {id: rideID, from: rideFrom, to: rideTo, date: rideDate, time: rideTime, seats: rideSeats, cost: rideCost};
+            results.push(res);
+
             console.log(rideID);
             console.log(rideFrom);
             console.log(rideTo);
@@ -105,6 +110,8 @@ export function searchRide(address, address2, startDate) {
         })
         }
 
+        console.log('This is a test');
+        console.log(results);
 /*
         for (var l=0;l<searchresults.length;l++){
         rideInstance.returndriver(searchresults[l]-1, {from: pubaddress})
@@ -148,7 +155,11 @@ export function searchRide(address, address2, startDate) {
 
             return browserHistory.push('/results')
           }) //rideinstance
+          .then(function (erase){
 
+            console.log('delete array');
+              results =[];
+          })    
 
           .catch(function(result) {
             // If error, go to signup page.

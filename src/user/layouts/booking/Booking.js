@@ -9,7 +9,7 @@ class Booking extends Component {
           <div className="pure-u-1-1">
             <h1> Results!</h1>
             <p> Here you can find your search results.</p>
-           // <BookingFormContainer />
+            <BookingFormContainer />
           </div>
         </div>
       </main>

@@ -39,7 +39,7 @@ ReactDOM.render((
           <Route path="dashboard" component={UserIsAuthenticated(Dashboard)} />
             <Route path="search" component={UserIsAuthenticated(SearchRide)} />
             <Route path="create" component={UserIsAuthenticated(CreateRide)} />
-            //<Route path="results" component={UserIsAuthenticated(Booking)} />
+            <Route path="results" component={UserIsAuthenticated(Booking)} />
           <Route path="signup" component={UserIsNotAuthenticated(SignUp)} />
           <Route path="profile" component={UserIsAuthenticated(Profile)} />
         </Route>
