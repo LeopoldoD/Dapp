@@ -12,7 +12,7 @@ import Home from './layouts/home/Home'
 import Dashboard from './layouts/dashboard/Dashboard'
 import SearchRide from './user/layouts/search/SearchRide'
 import CreateRide from './user/layouts/create/CreateRide'
-import Results from './user/layouts/results/Results'
+import Booking from './user/layouts/booking/Booking'
 import SignUp from './user/layouts/signup/SignUp'
 import Profile from './user/layouts/profile/Profile'
 
@@ -39,7 +39,7 @@ ReactDOM.render((
           <Route path="dashboard" component={UserIsAuthenticated(Dashboard)} />
             <Route path="search" component={UserIsAuthenticated(SearchRide)} />
             <Route path="create" component={UserIsAuthenticated(CreateRide)} />
-            //<Route path="results" component={UserIsAuthenticated(Results)} />
+            //<Route path="results" component={UserIsAuthenticated(Booking)} />
           <Route path="signup" component={UserIsNotAuthenticated(SignUp)} />
           <Route path="profile" component={UserIsAuthenticated(Profile)} />
         </Route>

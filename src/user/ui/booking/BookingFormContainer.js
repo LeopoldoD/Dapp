@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
-import Results from './Results'
-import { bookRide } from './ResultsActions'
+import BookingForm from './BookingForm'
+import { bookRide } from './BookingFormActions'
 
 const mapStateToProps = (state, ownProps) => {
   return {}
@@ -15,9 +15,9 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const ResultsContainer = connect(
+const BookingFormContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Results)
+)(BookingForm)
 
-export default ResultsContainer
+export default BookingFormContainer

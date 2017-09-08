@@ -11,6 +11,8 @@ contract RideContract is Killable{
     bytes32 time;
     uint seats;
     uint cost;
+    address driver;
+    address [] riders;
   }
 
   uint searchid;
@@ -19,14 +21,19 @@ contract RideContract is Killable{
 
   mapping (uint => Ride) private rides; 
 
-   function returnride(uint rideID) constant returns (uint, bytes32, bytes32, bytes32, bytes32, uint, uint){
-    // Check if rideID exists.
-
+   function returnride(uint rideID) constant returns (uint, bytes32, bytes32, bytes32, bytes32, uint, uint) {
+   // Provide ride information
     return (rides[rideID].id, rides[rideID].from, rides[rideID].to, rides[rideID].date, rides[rideID].time, rides[rideID].seats, rides[rideID].cost);
 
    }
 
-   function getContract() constant returns (address){
+   function returndriver(uint rideID) constant returns (address) {
+   // Provide driver address
+    return (rides[rideID].driver);
+   }
+
+
+   function getContract() constant returns (address) {
     return this;
     }
 
@@ -37,6 +44,7 @@ contract RideContract is Killable{
     {
         throw;
     }
+    
     rideID++;
     rides[rideID-1].id = rideID;
     rides[rideID-1].from =from;
@@ -46,6 +54,7 @@ contract RideContract is Killable{
     rides[rideID-1].seats = seats;
     rides[rideID-1].cost = cost;
     rideinstances.push(rideID);
+    rides[rideID-1].driver = msg.sender;
 
     return (rideID);
    }
@@ -63,24 +72,22 @@ contract RideContract is Killable{
         }
    }
 
-   function createsearchid() payable{
+   function createsearchid() payable {
     searchid++;
    }
 
-   function getsearchid() constant returns (uint){
+   function getsearchid() constant returns (uint) {
     return searchid;
    }
 
-   function countresults(bytes32 from, bytes32 to, bytes32 date, uint id) constant returns (uint, uint[], uint, uint){
+   function countresults(bytes32 from, bytes32 to, bytes32 date, uint id) constant returns (uint, uint[], uint, uint) {
     uint[] memory results = new uint[](10);
-    uint searchid;
     uint total;
     uint iter;
     uint count;
     uint tempid;
 
     total = rideID;
-    searchid = id;
 
         for (iter = 0; iter < rideinstances.length; iter++){
          if (rides[iter].from == from && rides[iter].to == to && rides[iter].date == date){
@@ -89,7 +96,7 @@ contract RideContract is Killable{
                count++;
          }
         }
-     return (count, results, total, searchid);
+     return (count, results, total, id);
     }
   
 }

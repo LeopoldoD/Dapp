@@ -5,17 +5,6 @@ import {ipfs} from '../../../database/ipfs'
 
 const contract = require('truffle-contract')
 
-/*export const USER_LOGGED_IN = 'USER_LOGGED_IN'
-function userLoggedIn(user) {
-  return {
-    type: USER_LOGGED_IN,
-    payload: user
-  }
-}
-*/
-//var db;
-//let rideID = 0;
-
 export function createRide(address, address2, seats, startDate, rideTime, cost) {
  // let web3 = store.getState().web3.web3Instance
   console.log('Create a new ride');
@@ -86,6 +75,7 @@ export function createRide(address, address2, seats, startDate, rideTime, cost) 
               return browserHistory.push(decodeURIComponent(currentLocation.query.redirect))
             }
 
+            alert('Ride succesfully created');
             return browserHistory.push('/dashboard')
           })
           .catch(function(result) {
@@ -95,19 +85,9 @@ export function createRide(address, address2, seats, startDate, rideTime, cost) 
             return browserHistory.push('/signup')
           })
 
-         
-
-      
-
-
 
 
         }) //create ride 
-
-
-
-
-
 
 //      }) //signVerify
       }) //getcoinbase

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import ResultsContainer from '../../ui/results/ResultsContainer'
+import BookingFormContainer from '../../ui/booking/BookingFormContainer'
 
-class Results extends Component {
+class Booking extends Component {
   render() {
     return(
       <main className="container">
@@ -9,7 +9,7 @@ class Results extends Component {
           <div className="pure-u-1-1">
             <h1> Results!</h1>
             <p> Here you can find your search results.</p>
-           // <ResultsContainer />
+           // <BookingFormContainer />
           </div>
         </div>
       </main>
@@ -17,4 +17,4 @@ class Results extends Component {
   }
 }
 
-export default Results
+export default Booking
