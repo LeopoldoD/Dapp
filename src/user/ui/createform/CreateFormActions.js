@@ -67,7 +67,6 @@ export function createRide(address, address2, seats, startDate, rideTime, cost) 
             //var rideSeats = web3.toDecimal(result[5]);
             //var rideCost = web3.toDecimal(result[6]);
             
-
             var currentLocation = browserHistory.getCurrentLocation()
 
             if ('redirect' in currentLocation.query)
@@ -84,8 +83,6 @@ export function createRide(address, address2, seats, startDate, rideTime, cost) 
 
             return browserHistory.push('/signup')
           })
-
-
 
         }) //create ride 
 
