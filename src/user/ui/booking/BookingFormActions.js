@@ -6,9 +6,10 @@ import {ipfs} from '../../../database/ipfs'
 const contract = require('truffle-contract')
 
 
-export function bookRide() {
+export function bookRide(option) {
  // let web3 = store.getState().web3.web3Instance
   console.log('Results');
+  console.log('Option selected: '+option);
 
   /*
 

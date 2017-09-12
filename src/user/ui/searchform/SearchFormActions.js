@@ -136,37 +136,6 @@ askSearchID();
 
 
 
-var firstMethod = function() {
-   var promise = new Promise(function(resolve, reject){
-         console.log('first method completed');
-         resolve({data: '123'});
-   });
-   return promise;
-};
- 
- 
-var secondMethod = function(someStuff) {
-   var promise = new Promise(function(resolve, reject){
-         console.log('second method completed');
-         resolve({newData: someStuff.data + ' some more data'});
-   });
-   return promise;
-};
- 
-var thirdMethod = function(someStuff) {
-   var promise = new Promise(function(resolve, reject){
-         console.log('third method completed');
-         resolve({result: someStuff.newData});
-   });
-   return promise;
-};
- 
-firstMethod()
-   .then(secondMethod)
-   .then(thirdMethod);
-
-
-
 
 
 // Promises chained 
@@ -216,14 +185,28 @@ firstMethod()
                 console.log(searchresults[j]);
               }
 
-               resolve({searchids: searchresults});
+              if (count == 0){
+                if (results.length > 0){
+                  results = [];
+                }
+                redirection();
+              }
+
+              else {
+                resolve({searchids: searchresults})
+              }
        })    
     });   
     return promise;       
   }
 
+
   function returnride(){
     var promise = new Promise(function(resolve, reject){
+    // Check if results contains data
+      if (results.length >0 ){
+          results = [];
+      }
 
       for (var k=0;k<searchresults.length;k++){
 
@@ -238,11 +221,13 @@ firstMethod()
             var rideSeats = web3.toDecimal(result4[5]);
             var rideCost = web3.toDecimal(result4[6]);
 
-            var res = {id: rideID, from: rideFrom, to: rideTo, date: rideDate, time: rideTime, seats: rideSeats, cost: rideCost};
-            // Check if results contains data
-            if (results.length >0 ){
-              results = [];
-            }
+            rideInstance.returndriver(rideID-1, {from: pubaddress})
+              .then(function(result5){
+
+            var ridedriver = result5;
+
+            var res = {id: rideID, from: rideFrom, to: rideTo, date: rideDate, time: rideTime, seats: rideSeats, cost: rideCost, driver:ridedriver, resultnumber: results.length+1}
+          
             results.push(res);
 
             console.log(rideID);
@@ -252,10 +237,23 @@ firstMethod()
             console.log(rideTime);
             console.log(rideSeats);
             console.log(rideCost);
+            console.log(ridedriver);
 
+          if (results.length == 0){
+           console.log('0 results'); 
+           resolve({resultss: 'no results found'});
+         }
+
+         console.log('resultslenght '+results.length);
+         console.log('searchresults length: '+searchresults.length);
+          if (results.length == searchresults.length){
             resolve({resultss: results});
-          })
-      }
+          }
+
+          }) //end driver
+          }) //end return ride
+      }//for
+
     
    });   
    return promise;  
@@ -269,7 +267,8 @@ firstMethod()
            return browserHistory.push(decodeURIComponent(currentLocation.query.redirect))
         }
           console.log('redirecting');
-          return browserHistory.push('/results')
+           resolve({redirectiondone: 'completed'});
+          return browserHistory.push('/results');
     });   
     return promise; 
   }     
@@ -280,12 +279,18 @@ createsearchid()
     .then(countresults)
     .then(returnride)
     .then(redirection)
-   // .catch(function(result){
-   //   console.log('Eror in Promises while searching for a ride'+result);
-   //   return browserHistory.push('/signup')
-   // })
+    .catch(function(result){
+      console.log('Eror in Promises while searching for a ride'+result);
+       var currentLocation = browserHistory.getCurrentLocation()
+        if ('redirect' in currentLocation.query)
+        {
+           return browserHistory.push(decodeURIComponent(currentLocation.query.redirect))
+        }
+          console.log('redirecting');
+          return browserHistory.push('/dashboard')
+    })
     
-//end promised chained
+  //end promised chained
 
 
 

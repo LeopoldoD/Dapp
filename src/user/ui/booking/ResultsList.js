@@ -1,46 +1,74 @@
 import React, { Component } from 'react'
 import {results} from '../searchform/SearchFormActions'
+// Import React Table
+import ReactTable from "react-table";
+import "react-table/react-table.css";
 
-class ResultsList extends Component {
-  constructor(props) {
+class ResultsList extends Component{
+  constructor(props){
     super(props)
     this.state = {
-      selection : '',
-      allresults :results,
+      allresults: results,
+      //resnumber : this.state.allresults.length,
     }
-
-    this.handleChange = this.handleChange.bind(this)
-  }
-  
-  handleChange(option) {
-    this.setState({
-      selection: option
-
-    })
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
+   render() { 
+    const data = this.state.allresults;  
+    //const number = this.state.allresults.length;
 
-      this.props.onBooking(this.state.selection);
-
-  }
-
-  render() {
-        
-     var test = results;
-     // console.log(test);
-      console.log(this.state.allresults);
-      //var rides = this.props.allresults.map(ride => {
-      //return ride={ride};
-  //  });
-
-   return (
-    <h1>Hello2</h1>
-   )   
-    
-  }
-
+    return(      
+      <div>
+        <ReactTable
+         data={data}
+         noDataText="No results found, try a different search"
+          columns={[
+            {
+              Header: "Results",
+              columns: [
+                {
+                  Header: "Option",
+                  accessor: "resultnumber",
+                },
+                {
+                  Header: "Driver",
+                  accessor: "driver",
+                },
+                {
+                  Header: "From",
+                  id: "from",
+                  accessor: d => d.from
+                },
+                {
+                  Header: "To",
+                  accessor: "to",
+                },
+                {
+                  Header: "Date",
+                  accessor: "date",
+                },
+                {
+                  Header: "Time",
+                  accessor: "time",
+                },
+                {
+                  Header: "#Seats",
+                  accessor: "seats",
+                },
+                {
+                  Header: "Cost per person",
+                  accessor: "cost",
+                },
+              ]
+            },
+          ]}
+          defaultPageSize={5}
+          className="-striped -highlight"
+        />
+        <br />
+      </div>);
+}
 }
 
 export default ResultsList
+

@@ -8,9 +8,9 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onBooking: () => {
+    onBooking: (option) => {
       event.preventDefault();
-      dispatch(bookRide())
+      dispatch(bookRide(option))
     }
   }
 }
