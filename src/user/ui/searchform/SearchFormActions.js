@@ -28,8 +28,6 @@ export function searchRide(address, address2, startDate) {
       // Using truffle-contract we create the RideContract object.
       const ride = contract(RideContract)
       ride.setProvider(web3.currentProvider)
-      console.log('provider:');
-      console.log(web3.currentProvider);
 
       // Declaring this for later so we can chain functions on Authentication.
       var rideInstance

@@ -3,6 +3,7 @@ pragma solidity ^0.4.2;
 import './zeppelin/lifecycle/Killable.sol';
 
 contract RideContract is Killable{
+
   struct Ride {
     uint id;
     bytes32 from;
@@ -10,6 +11,7 @@ contract RideContract is Killable{
     bytes32 date;
     bytes32 time;
     uint seats;
+    uint availableseats;
     uint cost;
     address driver;
     address [] riders;
@@ -32,7 +34,6 @@ contract RideContract is Killable{
     return (rides[rideID].driver);
    }
 
-
    function getContract() constant returns (address) {
     return this;
     }
@@ -53,11 +54,45 @@ contract RideContract is Killable{
     rides[rideID-1].time = time;
     rides[rideID-1].seats = seats;
     rides[rideID-1].cost = cost;
+
     rideinstances.push(rideID);
     rides[rideID-1].driver = msg.sender;
+    rides[rideID-1].availableseats = seats;
 
     return (rideID);
    }
+
+   function getavailableseats(uint id) constant returns (uint){
+    uint seats = rides[id-1].availableseats;
+    return(seats);
+   }
+
+   function bookride(uint id, uint seats) payable returns (uint) {
+   // Check if id was entered
+    if (id == 0x0){
+      throw;
+    }
+
+    //Validate number of seats
+    if (seats > rides[id-1].availableseats){
+      throw;
+    }
+
+    // Check if driver wants to book its own ride
+    if (msg.sender == rides[id-1].driver){
+      throw;
+    }
+
+    address driver = rides[id-1].driver;
+    uint costperperson = rides[id-1].cost;  
+    rides[id-1].availableseats -= seats;
+
+    Bookride(driver, costperperson);
+
+    return (rides[id-1].availableseats);
+   }
+
+   event Bookride (address to, uint cost);
 
    function getlength() constant returns (uint){
     uint total;

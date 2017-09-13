@@ -1,16 +1,20 @@
 import { connect } from 'react-redux'
 import BookingForm from './BookingForm'
 import { bookRide } from './BookingFormActions'
+import ResultsList from './ResultsList'
+
 
 const mapStateToProps = (state, ownProps) => {
-  return {}
+  return {
+  	//id: state.allresults[0].from,
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onBooking: (option) => {
+    onBooking: (id, seats) => {
       event.preventDefault();
-      dispatch(bookRide(option))
+      dispatch(bookRide(id, seats))
     }
   }
 }

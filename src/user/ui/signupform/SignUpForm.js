@@ -7,7 +7,7 @@ class SignUpForm extends Component {
     this.state = {
       name: '',
       email: '',
-      phone: null
+      phone: '',
     }
   }
 
