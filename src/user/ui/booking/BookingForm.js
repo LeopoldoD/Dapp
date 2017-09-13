@@ -35,7 +35,12 @@ class BookingForm extends Component {
       return alert ('Please enter a valid selection');
 
     } 
-    if (this.state.seats>5 || this.state.seats ==0 || this.state.seats == undefined || this.state.seats > this.state.searchresults.length){
+
+    if (this.state.searchresults[this.state.selection-1].availableseats == 0){
+      return alert ('This trip is fully booked, please select a different one');
+    }
+   
+    if (this.state.seats>5 || this.state.seats ==0 || this.state.seats == undefined || this.state.seats > this.state.searchresults[this.state.selection-1].availableseats){
       return alert ('Please enter a valid number of seats');
     }
 

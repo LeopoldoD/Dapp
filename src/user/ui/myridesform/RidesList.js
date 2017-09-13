@@ -1,33 +1,15 @@
 import React, { Component } from 'react'
-import {results} from '../searchform/SearchFormActions'
+//import {results} from '../searchform/SearchFormActions'
 // Import React Table
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-import BookingForm from './BookingForm'
+//import BookingForm from './BookingForm'
 
-class Results extends Component{
+class RidesList extends Component{
   constructor(props){
     super(props)
     this.state = {
-      allresults: results,
-    }
-  }
-  render() { 
-  const data = this.state.allresults;  
-return(  
-  <div>
-  <BookingForm data={data}/>
-  </div>
-)
-}
-}
-
-
-class ResultsList extends Component{
-  constructor(props){
-    super(props)
-    this.state = {
-      allresults: results,
+      allmyrides: rides,
     }
   }
 
@@ -91,5 +73,5 @@ class ResultsList extends Component{
 }
 }
 
-export default ResultsList
+export default RidesList
 

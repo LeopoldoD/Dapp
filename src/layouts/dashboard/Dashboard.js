@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import SearchRide from '../../../images/SearchRide.png'
 import CreateRide from '../../../images/CreateRide.png'
+import MyRides from '../../../images/MyRides.png'
 //import { Link } from 'react-router'
 
 class Dashboard extends Component {
@@ -13,9 +14,13 @@ class Dashboard extends Component {
       this.props.router.push('/search');
   };
 
-    handleCreate= function(e){
+  handleCreate= function(e){
       this.props.router.push('/create');
   };
+
+  handleMyRides = function (e){
+    this.props.router.push('/myrides');
+  }
   
 
   render() {    
@@ -32,6 +37,9 @@ class Dashboard extends Component {
               </li>
               <li>
                 <img src={CreateRide} alt="" onClick={this.handleCreate.bind(this)}/>
+              </li>
+              <li>
+                <img src={MyRides} alt="" onClick={this.handleMyRides.bind(this)}/>
               </li>
               </li>
              </span> 

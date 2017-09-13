@@ -29,9 +29,9 @@ contract RideContract is Killable{
 
    }
 
-   function returndriver(uint rideID) constant returns (address) {
+   function returndriverandseats(uint rideID) constant returns (address, uint) {
    // Provide driver address
-    return (rides[rideID].driver);
+    return (rides[rideID].driver, rides[rideID].availableseats);
    }
 
    function getContract() constant returns (address) {
@@ -85,14 +85,17 @@ contract RideContract is Killable{
 
     address driver = rides[id-1].driver;
     uint costperperson = rides[id-1].cost;  
+    // update the number of available seats
     rides[id-1].availableseats -= seats;
+    // add the address of the riders 
+    rides[id-1].riders.push(msg.sender);
 
-    Bookride(driver, costperperson);
+    Bookride(driver, costperperson, rides[id-1].riders);
 
     return (rides[id-1].availableseats);
    }
 
-   event Bookride (address to, uint cost);
+   event Bookride (address to, uint cost, address[] riders);
 
    function getlength() constant returns (uint){
     uint total;

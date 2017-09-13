@@ -219,23 +219,25 @@ askSearchID();
             var rideSeats = web3.toDecimal(result4[5]);
             var rideCost = web3.toDecimal(result4[6]);
 
-            rideInstance.returndriver(rideID-1, {from: pubaddress})
+            rideInstance.returndriverandseats(rideID-1, {from: pubaddress})
               .then(function(result5){
 
-            var ridedriver = result5;
+            var ridedriver = result5[0];
+            var availableseats = web3.toDecimal(result5[1]);
 
-            var res = {id: rideID, from: rideFrom, to: rideTo, date: rideDate, time: rideTime, seats: rideSeats, cost: rideCost, driver:ridedriver, resultnumber: results.length+1}
+            var res = {id: rideID, from: rideFrom, to: rideTo, date: rideDate, time: rideTime, seats: rideSeats, availableseats: availableseats, cost: rideCost, driver:ridedriver, resultnumber: results.length+1}
           
             results.push(res);
 
-            console.log(rideID);
-            console.log(rideFrom);
-            console.log(rideTo);
-            console.log(rideDate);
-            console.log(rideTime);
-            console.log(rideSeats);
-            console.log(rideCost);
-            console.log(ridedriver);
+            console.log('rideID: '+rideID);
+            console.log('from: '+rideFrom);
+            console.log('to: '+rideTo);
+            console.log('date: '+rideDate);
+            console.log('time: '+rideTime);
+            console.log('seats: '+rideSeats);
+            console.log('cost: '+rideCost);
+            console.log('driver: '+ridedriver);
+            console.log('availableseats: '+availableseats);
 
           if (results.length == 0){
            console.log('0 results'); 
