@@ -110,7 +110,7 @@ export function bookRide(id, seats) {
               return browserHistory.push(decodeURIComponent(currentLocation.query.redirect))
             }
 
-            return browserHistory.push('/results')
+            return browserHistory.push('/myrides')
           }) // available seats
           .catch(function(result) {
             // If error, go to signup page.

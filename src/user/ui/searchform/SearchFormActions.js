@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import RideContract from '../../../../build/contracts/RideContract.json'
+import Authentication from '../../../../build/contracts/Authentication.json'
 import { browserHistory } from 'react-router'
 import store from '../../../store'
 //import {ipfs} from '../../../database/ipfs'
@@ -17,6 +18,7 @@ export function searchRide(address, address2, startDate) {
 
   var ethUtil = require('ethereumjs-util');
   let web3 = store.getState().web3.web3Instance
+  console.log('web3 '+web3);
 
   var coinbase = web3.eth.coinbase;
   console.log(coinbase);
@@ -27,11 +29,13 @@ export function searchRide(address, address2, startDate) {
     return function(dispatch) {
       // Using truffle-contract we create the RideContract object.
       const ride = contract(RideContract)
+      const authentication = contract(Authentication)
       ride.setProvider(web3.currentProvider)
+      authentication.setProvider(web3.currentProvider)
 
       // Declaring this for later so we can chain functions on Authentication.
       var rideInstance
-
+      var authenticationInstance
 
         web3.eth.getCoinbase((error, pubaddress) => {
         // Log errors, if any.
@@ -41,100 +45,16 @@ export function searchRide(address, address2, startDate) {
 
    		ride.deployed().then(function(instance) {
           rideInstance = instance
- 	
+ 	        
            console.log('attempting results');
 
-//Works getlength!
-/*
-		rideInstance.getlength({from: pubaddress})
-          .then(function(result){
+        	var searchid;
+          var searchresults = new Array;
+
+
+      authentication.deployed().then(function(instance){
+        authenticationInstance = instance
     
-
-            console.log(result);
-            var longitud = web3.toDecimal(result);
-            console.log(longitud);
-*/
-	var searchid;
-  var searchresults = new Array;
- 
-
-/*
-
-// Promises
-
-  var searchstarted = true;
-
-const willCreateSearchID = new Promise(
-    (resolve, reject) => { // fat arrow
-        if (searchstarted) {
-        console.log('Will create search ID ' +searchstarted);
-         const createsearchid = () =>
-           rideInstance.createsearchid({from: pubaddress})
-           .then(function(result){
-             console.log(result);
-          }); // close createsearchid
-      resolve(createsearchid());
-      }
-      else {
-        const reason = new Error('searchid not created');
-        reject (reason);
-      }
-      }
-      );    
-
-const getSearchID = function (){
-  rideInstance.getsearchid({from: pubaddress})
-  .then(function(result2){
-   console.log(result2);
-   searchid = web3.toDecimal(result2);
-   console.log('getsearchid: '+searchid);
-  }); 
-  return Promise.resolve(getSearchID());
-}
-
-const countResults = function (){
-   rideInstance.countresults(address, address2, startDate, searchid, {from: pubaddress})
-   .then(function(result3){
-    console.log(result3);
-    
-    var count = web3.toDecimal(result3[0]);
-    var total = web3.toDecimal(result3[2]);
-    var searchID = web3.toDecimal(result3[3]);
-    console.log('results: '+count);
-    console.log('records: '+total);
-    console.log('searchid: '+searchID);
-
-     for (var i=0; i< count; i++){
-        searchresults.push(web3.toDecimal(result3[1][i]));
-      }
-
-      for (var j=0; j< count; j++){
-        console.log(searchresults[j]);
-      }
-      
-    });   
-   return Promise.resolve(countResults());
-}
-
-// call promise
-const askSearchID = function () {
-  console.log('Before creating searchid');
-    willCreateSearchID
-        .then(countResults)
-        .then(getSearchID)
-        .then(fulfilled => console.log(fulfilled)) // fat arrow
-        .catch(error => console.log(error.message)); // fat arrow
-
-        console.log('After creating searchid');
-};
-
-askSearchID();
-
-*/
-
-
-
-
 
 // Promises chained 
 
@@ -224,8 +144,19 @@ askSearchID();
 
             var ridedriver = result5[0];
             var availableseats = web3.toDecimal(result5[1]);
+            //authenticationInstance
+            authenticationInstance.getUserInfo(ridedriver, {from: pubaddress})
+            .then(function(result6){
+              console.log(result6);
 
-            var res = {id: rideID, from: rideFrom, to: rideTo, date: rideDate, time: rideTime, seats: rideSeats, availableseats: availableseats, cost: rideCost, driver:ridedriver, resultnumber: results.length+1}
+              var name = web3.toUtf8(result6[0]);
+              var email = web3.toUtf8(result6[1]);
+              var phone = web3.toDecimal(result6[2]);
+              console.log('name: '+name);
+              console.log('email: '+email);
+              console.log('phone: '+phone);
+      
+            var res = {id: rideID, from: rideFrom, to: rideTo, date: rideDate, time: rideTime, seats: rideSeats, availableseats: availableseats, cost: rideCost, driver:ridedriver, resultnumber: results.length+1, drivername: name, driverphone: phone, driveremail: email}
           
             results.push(res);
 
@@ -250,6 +181,7 @@ askSearchID();
             resolve({resultss: results});
           }
 
+          }) //end getuserinfo
           }) //end driver
           }) //end return ride
       }//for
@@ -401,6 +333,7 @@ createsearchid()
 
  
       }) //deployed
+  })//deployed2
    	})// get coinbase
 
     } //return

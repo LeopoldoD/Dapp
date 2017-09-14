@@ -12,8 +12,10 @@ contract Authentication is Killable {
 
   mapping (address => User) private users;
 
-  uint private id; // Stores user id temporarily
-
+  function getUserInfo (address pubaddress) constant returns (bytes32, bytes32, uint){
+    return (users[pubaddress].name, users[pubaddress].email, users[pubaddress].phone2);
+  }
+  
   function login() constant returns (bytes32, bytes32) {
     // Check if user exists.
     // If yes, return user.
@@ -210,19 +212,6 @@ contract Authentication is Killable {
 
     throw;
   }
-
-  function getData() constant returns (bytes32) {
-      bytes32 a = "abcd";
-      return (a);
-    }
-
-    function getData2(bytes32 myvar, bytes32 myvar2) payable returns (bytes32, bytes32, bytes32, bytes32) {
-      bytes32 b = "abcd";
-      bytes32 c = "wxyz";
-      bytes32 d = myvar;
-      bytes32 e = myvar2;
-      return (b, c, d, e);
-    } 
 
 
 }

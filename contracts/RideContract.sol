@@ -17,11 +17,21 @@ contract RideContract is Killable{
     address [] riders;
   }
 
+    struct Member {
+    uint[] driving; // new
+    uint[] myrides; // news
+  }
+
   uint searchid;
   uint rideID;
   uint[] rideinstances;
 
   mapping (uint => Ride) private rides; 
+  mapping (address => Member) private members;
+
+  function getrides () constant returns (uint, uint[], uint, uint[]){
+    return (members[msg.sender].driving.length, members[msg.sender].driving, members[msg.sender].myrides.length, members[msg.sender].myrides);
+  }
 
    function returnride(uint rideID) constant returns (uint, bytes32, bytes32, bytes32, bytes32, uint, uint) {
    // Provide ride information
@@ -57,6 +67,8 @@ contract RideContract is Killable{
 
     rideinstances.push(rideID);
     rides[rideID-1].driver = msg.sender;
+    members[msg.sender].driving.push(rideID);
+
     rides[rideID-1].availableseats = seats;
 
     return (rideID);
@@ -89,6 +101,7 @@ contract RideContract is Killable{
     rides[id-1].availableseats -= seats;
     // add the address of the riders 
     rides[id-1].riders.push(msg.sender);
+    members[msg.sender].myrides.push(rides[id-1].id);
 
     Bookride(driver, costperperson, rides[id-1].riders);
 

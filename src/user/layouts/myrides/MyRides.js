@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import MyRidesFormContainer from '../../ui/myridesform/MyRidesFormContainer'
+import RidesList from '../../ui/myridesform/RidesList'
 
 class MyRides extends Component {
   render() {
@@ -10,6 +11,7 @@ class MyRides extends Component {
             <h1>My Rides</h1>
             <p>Here you will find your rides.</p>
             <MyRidesFormContainer />
+            {/*<RidesList/> */}
           </div> 
         </div>
         </main>

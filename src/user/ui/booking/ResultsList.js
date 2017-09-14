@@ -31,7 +31,7 @@ class ResultsList extends Component{
     }
   }
 
-   render() { 
+   render() { console.log(this.statel.allresults);
     const data = this.state.allresults;  
 
     return(      
@@ -49,7 +49,7 @@ class ResultsList extends Component{
                 },
                 {
                   Header: "Driver",
-                  accessor: "driver",
+                  accessor: "drivername",
                 },
                 {
                   Header: "From",
