@@ -8,7 +8,6 @@ const contract = require('truffle-contract')
 
 export var results = new Array();
 
-
 export function searchRide(address, address2, startDate) {
 
   console.log('Print search ride results');
@@ -156,7 +155,7 @@ export function searchRide(address, address2, startDate) {
               console.log('email: '+email);
               console.log('phone: '+phone);
       
-            var res = {id: rideID, from: rideFrom, to: rideTo, date: rideDate, time: rideTime, seats: rideSeats, availableseats: availableseats, cost: rideCost, driver:ridedriver, resultnumber: results.length+1, drivername: name, driverphone: phone, driveremail: email}
+            var res = {id: rideID, from: rideFrom, to: rideTo, date: rideDate, time: rideTime, seats: rideSeats, availableseats: availableseats, cost: rideCost, driver: ridedriver, resultnumber: results.length+1, drivername: name, driverphone: phone, driveremail: email}
           
             results.push(res);
 
@@ -420,96 +419,4 @@ createsearchid()
     console.error('Web3 is not initialized.');
   }
   */
-
-
-
-
-export class PostResult extends Component {
-  constructor( props, context ) {
-    super( props, context );
-
-    this.handleSubmit = this.handleSubmit.bind( this );
-  }
-    handleSubmit( event ) {
-        event.preventDefault();
-        this.props.appendResult( this.rideidInput.value, this.fromInput.value, this.toInput.value );
-        this.rideidInput.value = '';
-        this.fromInput.value = '';
-        this.toInput.value = '';     
-    } 
-    render() {
-        return (
-            <form onSubmit={this.handleSubmit}>
-                       ref={id => this.rideidInput = id}
-                       ref={from => this.fromInput = from}
-                       ref={to => this.toInput = to}
-            
-            </form>
-        );
-    }
-}
-
-export class Result extends Component {
-    render() {
-        let id = this.props.rideid;
-        let from = this.props.from;
-        let to = this.props.to;
- 
-        return (
-            <div className="result">
-                <span className="result-rideid">{this.props.rideid}</span>&nbsp; 
-                <strong className="result-from">{this.props.from}</strong>&nbsp;
-                <span className="result-to">{this.props.to}</span>
-            </div>
-        );
-    }
-}
-
-export class ResultList extends Component {
-    render() {
-        return (
-            <div>
-                { 
-                    this.props.results.map( result => 
-                        <Result rideid={result.rideid}
-                                 from={result.from}
-                                 to={result.to}
-                                 key={result.id} />
-                      )
-                }
-            </div>
-        );
-    }
-}
-
-export class ResultsBox extends Component {
-    constructor( props, context ) {
-        super( props, context );
-        this.state = {
-            results: []
-        };
-
-        this.appendResult = this.appendResult.bind( this );
-    }
-    appendResult( rideid, from, to ) {
-        let newResult = {
-            id: this.state.results.length + 1,
-            rideid: rideid,
-            from: from,
-            to: to
-        }; 
-        this.setState({ results: [ ...this.state.results, newResult ] });
-    }    
-
-    render() {
-        return (
-            <div>
-                <ResultList results={this.state.results} />
-                <PostResult appendResult={this.appendResult} />
-            </div>
-        );
-    }
-}
-
-
 

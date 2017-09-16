@@ -1,20 +1,29 @@
 import { connect } from 'react-redux'
 import MyRidesForm from './MyRidesForm'
-import RidesList from './RidesList'
+//import RidesList from './RidesList'
 import {getMyRides} from './MyRidesFormActions'
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    //email: state.user.data.email,
-    //phone: state.user.data.phone
+    /*
+    driving: state.rides.driving,
+    myrides: state.rides.myrides,
+    */
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onGetMyRidesSubmit: () => {
+      if (event === undefined)
+      {
+        dispatch(getMyRides())
+      }
+      
+      else{
       event.preventDefault();
       dispatch(getMyRides())
+      }
     }
   }
 }
@@ -22,6 +31,6 @@ const mapDispatchToProps = (dispatch) => {
 const MyRidesFormContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(RidesList)
-//MyRidesForm
+)(MyRidesForm)
+
 export default MyRidesFormContainer

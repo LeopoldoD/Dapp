@@ -5,44 +5,100 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import {getMyRides} from './MyRidesFormActions'
 import MyRidesFormContainer from './MyRidesFormContainer'
+/*
 
-
-class RidesList extends Component{
-  constructor(props){
-    //console.log('First');
-    super(props)
-    this.state = {
-      alldriving: '',
-      allmyrides: '',
-    }
-  }
+class MyRidesForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault()
       this.props.onGetMyRidesSubmit();
   }
 
-   render() { 
-    //console.log('Second');
+  render() { console.log('Rendering Myridesform');
 
-    /*
-    getMyRides(function(res, res2){
-      console.log(res);
-      console.log(res2);
-      this.state.alldriving = res;
-      this.state.allmyrides = res2;
-      console.log('Finising update');
-    });
+    return(
+      <div>
+      <form className="pure-form pure-form-stacked" onSubmit={this.handleSubmit.bind(this)}>
+        <fieldset>
+
+          <button type="submit" className="pure-button pure-button-primary">Get Rides</button>
+
+        </fieldset>
+      </form>
+      </div> 
+
+    )
+  }
+}
+
 */
-    this.state.alldriving = resdriving;
-    this.state.allmyrides = resmyrides;
+
+/*
+
+class RidesList extends Component{
+  constructor(props){
+    super(props)
+
+    this.state = {
+      alldriving: '',
+      allmyrides: '',
+      loaded: false,
+    }
+    this.handleData = this.handleData.bind(this);
+  }
+
+  handleSubmit(event) {
+    event.preventDefault()
+      this.props.onGetMyRidesSubmit();
+
+  }
+
+  handleData(){
+    this.state = {
+      alldriving: resdriving,
+      allmyrides: resmyrides,
+      loaded: true,
+    }
+    console.log('Data loaded');
+  }
+  
+  getInitialState (){
+    return({hidden : "hidden"});
+  }
+
+  componentWillMount() {
+    console.log('Mounting data');
+    this.props.onGetMyRidesSubmit();
+    
+    var that = this;
+        setTimeout(function() {
+            that.show();
+        }, that.props.wait);
+        
+      //this.setState({alldriving : resdriving, allmyrides: resmyrides});
+  }
+
+  componentWillUnmount() {
+    console.log('Unmounting data');
+        this.state = {
+          alldriving: '',
+          allmyrides: '',
+        }
+     }
+  show() {
+    this.setState({hidden : ""});
+  }
+
+   render() {  console.log('Rendering RidesList');
+    this.handleData();
     const driving = this.state.alldriving;  
     const myrides = this.state.allmyrides; 
     console.log(driving);
     console.log(myrides);
 
     return(      
-      <div>
+      <div className={this.state.hidden}>
+      <h1>Hola3</h1>
         <ReactTable
          data={driving}
          noDataText="You have no rides as a driver"
@@ -157,4 +213,4 @@ class RidesList extends Component{
 }
 
 export default RidesList
-
+*/

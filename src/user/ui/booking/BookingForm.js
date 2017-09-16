@@ -50,7 +50,7 @@ class BookingForm extends Component {
 
   }
 
-  render() {
+  render() {console.log('Rendering result list');
     return (
    <div>
     <ResultsList/> 

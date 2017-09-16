@@ -15,7 +15,11 @@ contract Authentication is Killable {
   function getUserInfo (address pubaddress) constant returns (bytes32, bytes32, uint){
     return (users[pubaddress].name, users[pubaddress].email, users[pubaddress].phone2);
   }
-  
+
+  function authenticateuser () payable returns (address){
+    return (msg.sender);
+  }
+
   function login() constant returns (bytes32, bytes32) {
     // Check if user exists.
     // If yes, return user.

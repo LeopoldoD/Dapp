@@ -48,7 +48,9 @@
     "whatwg-fetch": "1.0.0"
   },
   "dependencies": {
+    "eth-sig-util": "^1.2.2",
     "ethereumjs-util": "^5.1.2",
+    "ethjs": "^0.2.8",
     "ipfs": "^0.25.2",
     "ipfs-api": "^14.1.2",
     "ipfs-daemon": "^0.3.1",

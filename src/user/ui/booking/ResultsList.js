@@ -5,24 +5,6 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import BookingForm from './BookingForm'
 
-class Results extends Component{
-  constructor(props){
-    super(props)
-    this.state = {
-      allresults: results,
-    }
-  }
-  render() { 
-  const data = this.state.allresults;  
-return(  
-  <div>
-  <BookingForm data={data}/>
-  </div>
-)
-}
-}
-
-
 class ResultsList extends Component{
   constructor(props){
     super(props)
@@ -31,7 +13,7 @@ class ResultsList extends Component{
     }
   }
 
-   render() { console.log(this.statel.allresults);
+   render() { console.log(this.state.allresults);
     const data = this.state.allresults;  
 
     return(      

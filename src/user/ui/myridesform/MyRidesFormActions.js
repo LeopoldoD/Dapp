@@ -1,27 +1,42 @@
 import RideContract from '../../../../build/contracts/RideContract.json'
 import Authentication from '../../../../build/contracts/Authentication.json'
 import store from '../../../store'
+import { browserHistory } from 'react-router'
 
 const contract = require('truffle-contract')
+
+/*
+export const RIDES_LOADED = 'RIDES_LOADED'
+function ridesLoaded(resdriving, resmyrides) {
+  return {
+    type: RIDES_LOADED,
+    payload: resdriving, resmyrides
+  }
+}
+*/
 
 export var resmyrides = new Array();
 export var resdriving = new Array();
 
-
 export var getMyRides = function(callback) { 
-  console.log('Start2');
+  console.log('Get my rides');
   var ethUtil = require('ethereumjs-util');
   let web3 = store.getState().web3.web3Instance
   var coinbase = web3.eth.coinbase;
   console.log(coinbase);
 
+  if (resdriving.length > 0){
+    resdriving = [];
+  }
+  if (resmyrides.length > 0){
+    resmyrides = [];
+  }
+
   // Double-check web3's status.
 
   if (typeof web3 !== 'undefined') {
-   console.log('Start 3');
 
     return function(dispatch) {
-      console.log('Start 3');
       // Using truffle-contract we create the authentication object.
       const ride = contract(RideContract)
       const authentication = contract(Authentication)
@@ -47,12 +62,6 @@ export var getMyRides = function(callback) {
           // Get member data
           console.log('Get member data');
 
-          if (resdriving.length > 0){
-            resdriving = [];
-          }
-          if (resmyrides.length > 0){
-            resmyrides = [];
-          }
           console.log('pubaddress: '+coinbase);
 
           rideInstance.getrides({from: coinbase})
@@ -119,6 +128,11 @@ export var getMyRides = function(callback) {
             var myridesnumber = web3.toDecimal(result[2]);
             console.log('myridesnumber:'+myridesnumber);
 
+            if (myridesnumber == 0){
+              console.log('Finish loading results, no my rides found..');
+             // dispatch(ridesLoaded({"driving": resdriving, "myrides": resmyrides}))
+            }
+
             if (myridesnumber !== undefined && myridesnumber !== 0) {
               var myrides = new Array();
               for (var i =0; i< myridesnumber; i++){
@@ -173,6 +187,9 @@ export var getMyRides = function(callback) {
 
             console.log('resmyrideslength '+resmyrides.length);
 
+           console.log('Finish loading all results..');
+           //dispatch(ridesLoaded({"driving": resdriving, "myrides": resmyrides}))
+
           }) //get userinfo
           }) //returndriver and seats
           }) //return ride    
@@ -181,6 +198,7 @@ export var getMyRides = function(callback) {
 
           }) //get rides
 
+        
           .catch(function(result) {
             console.log('Error: '+result);
             // If error...
@@ -188,6 +206,7 @@ export var getMyRides = function(callback) {
 
         }) //deployed
         }) //deployed2
+        console.log('last thing?');
       }) //get coinbase
     } //return 
 

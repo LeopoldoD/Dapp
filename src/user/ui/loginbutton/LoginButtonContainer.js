@@ -3,7 +3,8 @@ import LoginButton from './LoginButton'
 import { verifyIdentity } from './LoginButtonActionsv2'
 
 const mapStateToProps = (state, ownProps) => {
-  return {}
+  return {
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {

@@ -34,3 +34,14 @@ export const HiddenOnlyAuth = UserAuthWrapper({
   predicate: user => user.data === null,
   FailureComponent: null
 })
+
+/*
+export const UserRidesLoaded = UserAuthWrapper({
+  authSelector: state => state.user,
+  redirectAction: routerActions.replace,
+  failureRedirectPath: (state, ownProps) => ownProps.location.query.redirect || '/dashboard',
+  wrapperDisplayName: 'UserRidesLoaded',
+  predicate: user => user.rides,
+  FailureComponent: null
+})
+*/
