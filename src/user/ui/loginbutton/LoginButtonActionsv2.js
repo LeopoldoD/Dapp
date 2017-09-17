@@ -124,7 +124,7 @@ function userLoggedIn(user, email, phone) {
           .then(function(verify){
             console.log(verify);
             console.log('user authenticated');
-        
+
           // Attempt to login user.
           authenticationInstance.login3({from: pubaddress})
           .then(function(result) {
@@ -149,8 +149,8 @@ function userLoggedIn(user, email, phone) {
             }
 
             return browserHistory.push('/dashboard')
-          })
-        })
+          }) //login3
+     //   }) //authenticateuser
           .catch(function(result) {
             // If error, go to signup page.
             console.log('error: '+result);
@@ -158,6 +158,14 @@ function userLoggedIn(user, email, phone) {
 
             return browserHistory.push('/signup')
           })
+        }) // authenticate user
+        .catch(function(result) {
+            // If error, go to signup page.
+            console.log('error authenticate user: '+result);
+            console.error('Wallet ' + pubaddress + ' does not have an account!')
+
+            return browserHistory.push('/signup')
+          });
         }) //authentication 
 //     }) //signVerify
       }) //getcoinbase

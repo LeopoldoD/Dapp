@@ -52,7 +52,6 @@ export function bookRide(id, seats) {
               return alert ('Invalid number of seats selected');
             }
 
-          
           var cost;
           var driver;
           var totalcost;
@@ -62,9 +61,7 @@ export function bookRide(id, seats) {
             if (error){
               console.log('error: '+error);
             }
-
             console.log(result2);
-          });
 
           var book = rideInstance.Bookride({fromBlock: 0, toBlock: 'latest'});
             book.watch(function(err, result3) {
@@ -81,8 +78,6 @@ export function bookRide(id, seats) {
               console.log('cost: '+cost);
               console.log("totalcost: "+totalcost);
 
-    
-    
             web3.eth.sendTransaction({
             from: pubaddress,
             to:  driver,
@@ -94,14 +89,6 @@ export function bookRide(id, seats) {
                 else {
                   console.log('Error: '+error);
                 }
-              }); //send transaction
-
-          }); //book ride
-           
-   
-
-
- //         }) //bookride
 
             var currentLocation = browserHistory.getCurrentLocation()
 
@@ -111,7 +98,29 @@ export function bookRide(id, seats) {
             }
 
             return browserHistory.push('/myrides')
-          }) // available seats
+
+          }) //send transaction
+          .catch(function(e){
+            console.log('Send transaction error: '+e);
+          });  
+
+          })//Bookride watch event
+          .catch(function(e){
+            console.log('Book ride watch event error: '+e);
+          });
+
+          }) //Book ride
+          .catch(function(e){
+            console.log('Book ride function error: '+e);
+          });
+
+          }) //get available seats
+          .catch(function(e){
+            console.log('Get available seats error: '+e);
+          });
+
+        }) //deployed 
+        // Error deployed
           .catch(function(result) {
             // If error, go to signup page.
             console.log('error'+result);
@@ -119,11 +128,6 @@ export function bookRide(id, seats) {
 
             return browserHistory.push('/signup')
           })
-
-        
-
-        }) //deployed 
-
       }) //getcoinbase
 
     } //return
