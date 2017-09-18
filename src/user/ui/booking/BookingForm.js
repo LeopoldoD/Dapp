@@ -12,7 +12,6 @@ class BookingForm extends Component {
       seats: '',
 
     }
-
   }
   
   handleSelection(option) {

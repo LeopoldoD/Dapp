@@ -42,7 +42,7 @@ export function bookRide(id, seats) {
           console.log('attempting book');
 
           // check if seats are available
-          rideInstance.getavailableseats(id, {from: pubaddress})
+            rideInstance.getavailableseats(id, {from: pubaddress})
           .then(function(result){
             console.log(result);
             var availableseats = web3.toDecimal(result);
@@ -56,13 +56,33 @@ export function bookRide(id, seats) {
           var driver;
           var totalcost;
 
-          rideInstance.bookride(id, seats, {from: pubaddress, gas: 440000})
-          .then(function(error, result2){
-            if (error){
-              console.log('error: '+error);
-            }
-            console.log(result2);
+           rideInstance.verifybooking(id, seats, {from: pubaddress})
+          .then(function(result){
+            console.log(result);
+            driver = result[0];
+            cost = web3.toDecimal(result[1]);
+            totalcost = cost*seats;
+              console.log("to: "+driver);
+              console.log('cost: '+cost);
+              console.log("totalcost: "+totalcost);
 
+            web3.eth.sendTransaction({
+            from: pubaddress,
+            to:  driver,
+            value: web3.toWei(totalcost, 'ether')
+              }, function(error, result2) {
+                if (!error) {
+                  console.log('Ride paid!')
+                } 
+                else {
+                  console.log('Error: '+error);
+                }
+
+          rideInstance.bookride(id, seats, {from: pubaddress, gas: 440000})
+          .then(function(result2){
+            console.log(result2);
+            console.log('Ride booked!')
+/*
           var book = rideInstance.Bookride({fromBlock: 0, toBlock: 'latest'});
             book.watch(function(err, result3) {
             if(err) {
@@ -77,19 +97,7 @@ export function bookRide(id, seats) {
               console.log("to: "+driver);
               console.log('cost: '+cost);
               console.log("totalcost: "+totalcost);
-
-            web3.eth.sendTransaction({
-            from: pubaddress,
-            to:  driver,
-            value: web3.toWei(totalcost, 'ether')
-              }, function(error, result) {
-                if (!error) {
-                  console.log('Ride booked!')
-                } 
-                else {
-                  console.log('Error: '+error);
-                }
-
+*/
             var currentLocation = browserHistory.getCurrentLocation()
 
             if ('redirect' in currentLocation.query)
@@ -97,12 +105,7 @@ export function bookRide(id, seats) {
               return browserHistory.push(decodeURIComponent(currentLocation.query.redirect))
             }
 
-            return browserHistory.push('/myrides')
-
-          }) //send transaction
-          .catch(function(e){
-            console.log('Send transaction error: '+e);
-          });  
+            return browserHistory.push('/dashboard')
 
           })//Bookride watch event
           .catch(function(e){
@@ -113,6 +116,8 @@ export function bookRide(id, seats) {
           .catch(function(e){
             console.log('Book ride function error: '+e);
           });
+
+          }); //send transaction
 
           }) //get available seats
           .catch(function(e){
@@ -136,4 +141,3 @@ export function bookRide(id, seats) {
   }
   
 } 
-

@@ -79,17 +79,15 @@ contract RideContract is Killable{
     return(seats);
    }
 
-   function bookride(uint id, uint seats) payable returns (uint) {
-   // Check if id was entered
+  function verifybooking (uint id, uint seats) constant returns (address, uint){
+    // Check if id is valid
     if (id == 0x0){
       throw;
     }
-
     //Validate number of seats
     if (seats > rides[id-1].availableseats){
       throw;
     }
-
     // Check if driver wants to book its own ride
     if (msg.sender == rides[id-1].driver){
       throw;
@@ -97,18 +95,23 @@ contract RideContract is Killable{
 
     address driver = rides[id-1].driver;
     uint costperperson = rides[id-1].cost;  
+
+    return (driver, costperperson);
+   }
+
+
+   function bookride(uint id, uint seats) payable {
+
     // update the number of available seats
     rides[id-1].availableseats -= seats;
     // add the address of the riders 
     rides[id-1].riders.push(msg.sender);
     members[msg.sender].myrides.push(rides[id-1].id);
 
-    Bookride(driver, costperperson, rides[id-1].riders);
-
-    return (rides[id-1].availableseats);
+  //  Bookride(driver, costperperson, rides[id-1].riders);
    }
 
-   event Bookride (address to, uint cost, address[] riders);
+   // event Bookride (address to, uint cost, address[] riders);
 
    function getlength() constant returns (uint){
     uint total;
