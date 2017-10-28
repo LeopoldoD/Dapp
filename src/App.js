@@ -38,7 +38,7 @@ class App extends Component {
     return (
       <div className="App">
         <nav className="navbar pure-menu pure-menu-horizontal">
-          <Link to="/" className="pure-menu-heading pure-menu-link">Ride Share</Link>
+          <Link to="/" className="pure-menu-heading pure-menu-link">Decentralized Ride Share</Link>
           <ul className="pure-menu-list navbar-right">
             <OnlyGuestLinks />
             <OnlyAuthLinks />

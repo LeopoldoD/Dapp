@@ -144,7 +144,7 @@ export function searchRide(address, address2, startDate) {
             var ridedriver = result5[0];
             var availableseats = web3.toDecimal(result5[1]);
             //authenticationInstance
-            authenticationInstance.getUserInfo(ridedriver, {from: pubaddress})
+            authenticationInstance.getuserinfo(ridedriver, {from: pubaddress})
             .then(function(result6){
               console.log(result6);
 
@@ -210,8 +210,8 @@ createsearchid()
     .then(countresults)
     .then(returnride)
     .then(redirection)
-    .catch(function(result){
-      console.log('Eror in Promises while searching for a ride'+result);
+    .catch(function(error){
+      console.log('Eror in Promises while searching for a ride'+error);
        var currentLocation = browserHistory.getCurrentLocation()
         if ('redirect' in currentLocation.query)
         {

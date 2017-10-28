@@ -13,12 +13,11 @@ function userLoggedIn(user, email, phone) {
   }
 }
 
-
  export function verifyIdentity(){
   var ethUtil = require('ethereumjs-util');
   let web3 = store.getState().web3.web3Instance
 
-  //var msg ='authenticate user';
+  var msg ='authenticate user';
   var coinbase = web3.eth.coinbase;
   console.log(coinbase);
  // console.log(web3.sha3(msg));
@@ -45,7 +44,7 @@ function userLoggedIn(user, email, phone) {
         }
 
      // Will sign a message to verify identity using private key
-     /*
+    /* 
      web3.eth.sign(pubaddress, web3.sha3(msg), function (err, signature){
       if (err) return console.error(err)
         console.log('SIGNED:' + signature)
@@ -69,8 +68,8 @@ function userLoggedIn(user, email, phone) {
      console.log("Ta-da!")
      console.log(adr);
      console.log(pubaddress);
-*/
 
+*/
         // end 1st part sign message
 
         // Second methos using eth-sig-utl
@@ -112,8 +111,6 @@ function userLoggedIn(user, email, phone) {
 
   })
 */
-
-
         authentication.deployed().then(function(instance) {
           authenticationInstance = instance
           console.log('attempting login');
@@ -126,7 +123,7 @@ function userLoggedIn(user, email, phone) {
             console.log('user authenticated');
 
           // Attempt to login user.
-          authenticationInstance.login3({from: pubaddress})
+          authenticationInstance.login({from: pubaddress})
           .then(function(result) {
             // If no error, login user.
             console.log(result);

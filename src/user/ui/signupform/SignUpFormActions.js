@@ -1,5 +1,5 @@
 import AuthenticationContract from '../../../../build/contracts/Authentication.json'
-import { loginUser } from '../loginbutton/LoginButtonActions'
+import { verifyIdentity } from '../loginbutton/LoginButtonActionsv2'
 import store from '../../../store'
 
 const contract = require('truffle-contract')
@@ -29,46 +29,19 @@ export function signUpUser(name, email, phone) {
 
         console.log(authentication.deployed());
 
-        
-        
-      
-
         authentication.deployed().then(function(instance) {
           authenticationInstance = instance
-
-        /*
-          console.log('test function');
-          console.log(name,email);
-          // Attempt to sign up user.
-          authenticationInstance.signup2(name, email, phone {from: coinbase})
-          .then(function(result) {
-            // If no error, login user.
-            console.log('no error');
-            console.log(result);
-            //console.log(result2);
-            return dispatch(loginUser());
-          })
-          .catch(function(result) {
-            // If error...
-          console.log('errorrr');
-          //console.log(result);
-          })
-        })
-       
-      */
         
-
-      
           console.log(name,email);
           console.log('attempting signup');
           // Attempt to sign up user.
-          authenticationInstance.signup3(name, email, phone, {from: coinbase})
+          authenticationInstance.signup(name, email, phone, {from: coinbase})
           .then(function(result) {
             // If no error, login user.
             console.log('will login User');
             console.log(result)
 
-            return dispatch(loginUser())
+            return dispatch(verifyIdentity())
           })
           .catch(function(result) {
             // If error...

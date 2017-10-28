@@ -28,8 +28,8 @@ class Dashboard extends Component {
       <main className="container">
         <div className="pure-g">
           <div className="pure-u-1-1">
-            <h1>Welcome</h1>
-            <p><strong>Hi {this.props.authData.name}!, your email is {this.props.authData.email}</strong></p>
+            <h1>Welcome to Decentralized Ride Share!</h1>
+            <p><strong>Hi {this.props.authData.name}!</strong></p>
             <span>
               <li className="pure-menu-list">
               <li>

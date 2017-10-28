@@ -36,7 +36,7 @@ export function updateUser(name, email, phone) {
           authenticationInstance = instance
 
           // Attempt to login user.
-          authenticationInstance.update3(name, email, phone, {from: coinbase})
+          authenticationInstance.update(name, email, phone, {from: coinbase})
           .then(function(result) {
             // If no error, update user.
             console.log(result);

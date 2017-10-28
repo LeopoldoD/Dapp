@@ -160,7 +160,7 @@ export var getMyRides = function(callback) {
               var availableseats = web3.toDecimal(result5[1]);
 
                //authenticationInstance
-            authenticationInstance.getUserInfo(ridedriver, {from: coinbase})
+            authenticationInstance.getuserinfo(ridedriver, {from: coinbase})
             .then(function(result6){
               console.log(result6);
 

@@ -42,17 +42,16 @@ class ProfileForm extends Component {
       return alert('Please enter a valid email');
     }
 
-    if(this.state.phone.match(phoneformat)){
-      console.log('valid phone number');
-    }
-
     // Check email and phone format
 
     var emailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; //Regular expression
     var phoneformat = /^[-+]?[0-9]+$/;  
 
     console.log('email/phone verification');
-    if(this.state.email.match(emailformat) && this.state.phone.match(phoneformat))  { 
+    var phonecheck;
+    phonecheck = String(this.state.phone);
+    console.log(typeof(this.state.phone));
+    if(this.state.email.match(emailformat) && phonecheck.match(phoneformat))  { 
       console.log('valid email, valid phone number')
       this.props.onProfileFormSubmit(this.state.name, this.state.email, this.state.phone)
     }
