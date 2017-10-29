@@ -143,9 +143,10 @@ export function searchRide(address, address2, startDate) {
 
             var ridedriver = result5[0];
             var availableseats = web3.toDecimal(result5[1]);
+            console.log(result5);
             //authenticationInstance
             authenticationInstance.getuserinfo(ridedriver, {from: pubaddress})
-            .then(function(result6){
+            .then(function(result6, error){
               console.log(result6);
 
               var name = web3.toUtf8(result6[0]);
@@ -154,6 +155,10 @@ export function searchRide(address, address2, startDate) {
               console.log('name: '+name);
               console.log('email: '+email);
               console.log('phone: '+phone);
+
+              if (error){
+                alert('User is not a member, please create an account');
+              }
       
             var res = {id: rideID, from: rideFrom, to: rideTo, date: rideDate, time: rideTime, seats: rideSeats, availableseats: availableseats, cost: rideCost, driver: ridedriver, resultnumber: results.length+1, drivername: name, driverphone: phone, driveremail: email}
           
@@ -181,6 +186,9 @@ export function searchRide(address, address2, startDate) {
           }
 
           }) //end getuserinfo
+            .catch(function(error){
+              alert('You are not a member, please create an account');
+            })
           }) //end driver
           }) //end return ride
       }//for

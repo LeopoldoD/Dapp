@@ -191,6 +191,9 @@ export var getMyRides = function(callback) {
            //dispatch(ridesLoaded({"driving": resdriving, "myrides": resmyrides}))
 
           }) //get userinfo
+          .catch(function(error){
+            alert('You are not a member, please create an account');
+          })
           }) //returndriver and seats
           }) //return ride    
           } //loop

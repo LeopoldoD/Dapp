@@ -9,6 +9,8 @@ contract Authentication is Killable {
     uint phone;
   }
 
+  address[] members;
+
   mapping (address => User) private users;
 
   function login() constant returns (bytes32, bytes32, uint) {
@@ -50,6 +52,7 @@ function signup(bytes32 name, bytes32 email, uint phone) returns (bytes32, bytes
         users[msg.sender].name = name;
         users[msg.sender].email = email;
         users[msg.sender].phone = phone;
+        members.push(msg.sender);
 
         return (users[msg.sender].name, users[msg.sender].email, users[msg.sender].phone);
    }
@@ -77,8 +80,23 @@ function signup(bytes32 name, bytes32 email, uint phone) returns (bytes32, bytes
     throw;
   }
 
+  function checkmembership () constant returns (bool){
+   uint iter;
+
+  // Check if requester has permissions to receive account information (member of App)
+     for (iter = 0; iter < members.length; iter++){
+         if (msg.sender == members[iter]){
+          return true;
+         }
+      }
+      return false;
+  }
+
   function getuserinfo (address pubaddress) constant returns (bytes32, bytes32, uint){
-    return (users[pubaddress].name, users[pubaddress].email, users[pubaddress].phone);
+    if(checkmembership()){
+      return (users[pubaddress].name, users[pubaddress].email, users[pubaddress].phone);
+    }
+    throw;
   }
 
   function authenticateuser () returns (address){
