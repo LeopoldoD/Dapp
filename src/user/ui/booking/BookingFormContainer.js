@@ -1,8 +1,6 @@
 import { connect } from 'react-redux'
 import BookingForm from './BookingForm'
 import { bookRide } from './BookingFormActions'
-import ResultsList from './ResultsList'
-
 
 const mapStateToProps = (state, ownProps) => {
   return {

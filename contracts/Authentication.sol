@@ -1,15 +1,16 @@
 pragma solidity ^0.4.2;
 
 import './zeppelin/lifecycle/Killable.sol';
+// import './Membership.sol';
 
-contract Authentication is Killable {
+contract Authentication is Killable{
   struct User {
     bytes32 name;
     bytes32 email;
     uint phone;
   }
 
-  address[] members;
+  address[] public regmembers;
 
   mapping (address => User) private users;
 
@@ -52,7 +53,8 @@ function signup(bytes32 name, bytes32 email, uint phone) returns (bytes32, bytes
         users[msg.sender].name = name;
         users[msg.sender].email = email;
         users[msg.sender].phone = phone;
-        members.push(msg.sender);
+        regmembers.push(msg.sender);
+        //super.membership(members);
 
         return (users[msg.sender].name, users[msg.sender].email, users[msg.sender].phone);
    }
@@ -80,27 +82,29 @@ function signup(bytes32 name, bytes32 email, uint phone) returns (bytes32, bytes
     throw;
   }
 
-  function checkmembership () constant returns (bool){
+  function getuserinfo (address pubaddress) onlyNew constant returns (bytes32, bytes32, uint){
+      return (users[pubaddress].name, users[pubaddress].email, users[pubaddress].phone);
+  }
+
+  function authenticateuser () returns (address){
+    return (msg.sender);
+  }
+
+  function checkmembership () public constant returns (bool){
    uint iter;
 
-  // Check if requester has permissions to receive account information (member of App)
-     for (iter = 0; iter < members.length; iter++){
-         if (msg.sender == members[iter]){
+  // Check if user has permissions to receive account information (member of App)
+     for (iter = 0; iter < regmembers.length; iter++){
+         if (msg.sender == regmembers[iter]){
           return true;
          }
       }
       return false;
   }
 
-  function getuserinfo (address pubaddress) constant returns (bytes32, bytes32, uint){
-    if(checkmembership()){
-      return (users[pubaddress].name, users[pubaddress].email, users[pubaddress].phone);
-    }
-    throw;
-  }
-
-  function authenticateuser () returns (address){
-    return (msg.sender);
+    modifier onlyNew() {
+    if (!this.checkmembership()) throw;
+      _;
   }
 
 }

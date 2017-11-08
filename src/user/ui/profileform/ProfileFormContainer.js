@@ -13,7 +13,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onProfileFormSubmit: (name, email, phone) => {
-      event.preventDefault();
+     event.preventDefault();
       dispatch(updateUser(name, email, phone))
     }
   }

@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import CreateFormContainer from '../../ui/createform/CreateFormContainer'
-//import {PostResultForm, ResultsBox} from '../../ui/searchform/SearchFormActions'
-
 
 class CreateRide extends Component {
   render() {
@@ -12,7 +10,6 @@ class CreateRide extends Component {
             <h1>Create a new Ride!</h1>
             <p> Here you can create a new ride to share fuel costs with others.</p>
             <CreateFormContainer />
-            {/*<ResultsBox /> */}
           </div>
         </div>
       </main>

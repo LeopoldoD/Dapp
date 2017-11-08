@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import PlacesAutocomplete, { geocodeByAddress, getLatLng } from './location/react-places-autocomplete/src/PlacesAutocomplete'
+import PlacesAutocomplete from 'react-places-autocomplete'
+import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
+//import PlacesAutocomplete, { geocodeByAddress, getLatLng } from './location/react-places-autocomplete/src/PlacesAutocomplete'
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -20,8 +22,8 @@ class SearchForm extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleSelect2 = this.handleSelect2.bind(this)
     this.handleChange2 = this.handleChange2.bind(this)
-    this.renderGeocodeFailure = this.renderGeocodeFailure.bind(this)
-    this.renderGeocodeSuccess = this.renderGeocodeSuccess.bind(this)
+    //this.renderGeocodeFailure = this.renderGeocodeFailure.bind(this)
+    //this.renderGeocodeSuccess = this.renderGeocodeSuccess.bind(this)
     this.handleDate = this.handleDate.bind(this)
   }
 
@@ -58,7 +60,7 @@ class SearchForm extends Component {
     geocodeByAddress(address2)
       .then((results) => getLatLng(results[0]))
       .then(({ lat, lng }) => {
-        console.log('Success Yay', { lat, lng })
+        //console.log('Success Yay', { lat, lng })
         this.setState({
           geocodeResults: this.renderGeocodeSuccess(lat, lng),
           loading2: false
@@ -95,7 +97,7 @@ class SearchForm extends Component {
 
 
   handleSubmit(event) {
-    event.preventDefault()
+  event.preventDefault()
 
     //Review lengths name, phone and email
 
@@ -106,10 +108,12 @@ class SearchForm extends Component {
 
     if(this.state.address2.length <2){
       return alert('Please enter a valid destination');
-    }
+     } 
 
-      this.state.startDate = moment(this.state.startDate).format('MMM-DD-YYYY');  //Format Date
-      this.props.onSearchFormSubmit(this.state.address, this.state.address2, this.state.startDate)
+
+      //tartDate : moment(this.state.startDate).format('MMM-DD-YYYY') })
+      //this.state.startDate = moment(this.state.startDate).format('MMM-DD-YYYY');  //Format Date
+      this.props.onSearchFormSubmit(this.state.address, this.state.address2, moment(this.state.startDate).format('MMM-DD-YYYY'));
 
   }
 

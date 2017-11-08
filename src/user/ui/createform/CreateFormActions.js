@@ -1,27 +1,15 @@
 import RideContract from '../../../../build/contracts/RideContract.json'
 import { browserHistory } from 'react-router'
 import store from '../../../store'
-import {ipfs} from '../../../database/ipfs'
 
 const contract = require('truffle-contract')
 
-export function createRide(address, address2, seats, startDate, rideTime, cost) {
- // let web3 = store.getState().web3.web3Instance
-  console.log('Create a new ride');
-  console.log('from: '+address);
-  console.log('to: '+seats);
-  console.log('date: '+startDate);
-  console.log('time: '+rideTime);
-  console.log('cost: '+cost);
+export function createRide(address, address2, seats, startDate, rideTime, cost, meetingpoint) {
 
-//  ipfs('createnewride', address, address2, startDate, rideTime, seats);
-
-  var ethUtil = require('ethereumjs-util');
   let web3 = store.getState().web3.web3Instance
 
   var coinbase = web3.eth.coinbase;
   console.log(coinbase);
-
 
   // Double-check web3's status.
   if (typeof web3 !== 'undefined') {
@@ -30,12 +18,9 @@ export function createRide(address, address2, seats, startDate, rideTime, cost) 
       // Using truffle-contract we create the RideContract object.
       const ride = contract(RideContract)
       ride.setProvider(web3.currentProvider)
-      console.log('provider:');
-      console.log(web3.currentProvider);
 
       // Declaring this for later so we can chain functions on Authentication.
       var rideInstance
-
 
         web3.eth.getCoinbase((error, pubaddress) => {
         // Log errors, if any.
@@ -43,29 +28,16 @@ export function createRide(address, address2, seats, startDate, rideTime, cost) 
           console.error(error);
         }
 
-
         ride.deployed().then(function(instance) {
           rideInstance = instance
-
 
           console.log('attempting create');
        
           // Attempt to login user.
-          rideInstance.createnewride(address, address2, startDate, rideTime, seats, cost, {from: pubaddress})
+          rideInstance.createnewride(address, address2, startDate, rideTime, seats, cost, meetingpoint, {from: pubaddress})
           .then(function(result) {
-            // If no error, login user.
-            console.log(result);
-            //var rideID = web3.toDecimal(result[0]);
-            //var from = web3.toUtf8(result[1]);
-            //console.log(rideID);
-            //console.log(from);
 
-            //var rideFrom = web3.toUtf8(result[1]);
-            //var rideFrom = web3.toUtf8(result[2]);
-            //var rideDate = web3.toUtf8(result[3]);
-            //var rideTime = web3.toUtf8(result[4]);
-            //var rideSeats = web3.toDecimal(result[5]);
-            //var rideCost = web3.toDecimal(result[6]);
+            // Redirect if successful
             
             var currentLocation = browserHistory.getCurrentLocation()
 
@@ -86,13 +58,11 @@ export function createRide(address, address2, seats, startDate, rideTime, cost) 
 
         }) //create ride 
 
-//      }) //signVerify
       }) //getcoinbase
 
     } //return
   } else {
     console.error('Web3 is not initialized.');
   }
-  
 } 
 

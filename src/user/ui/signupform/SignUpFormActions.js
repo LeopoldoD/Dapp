@@ -1,4 +1,4 @@
-import AuthenticationContract from '../../../../build/contracts/Authentication.json'
+import RideContract from '../../../../build/contracts/RideContract.json'
 import { verifyIdentity } from '../loginbutton/LoginButtonActionsv2'
 import store from '../../../store'
 
@@ -12,40 +12,36 @@ export function signUpUser(name, email, phone) {
 
     return function(dispatch) {
       // Using truffle-contract we create the authentication object.
-      const authentication = contract(AuthenticationContract)
-      authentication.setProvider(web3.currentProvider)
+      const ride = contract(RideContract)
+      ride.setProvider(web3.currentProvider)
 
       // Declaring this for later so we can chain functions on Authentication.
-      var authenticationInstance
+      var rideInstance
 
       // Get current ethereum wallet.
       web3.eth.getCoinbase((error, coinbase) => {
         // Log errors, if any.
-        console.log(coinbase);
         //coinbase is the ethereum address
         if (error) {
           console.error(error);
         }
 
-        console.log(authentication.deployed());
+        console.log(ride.deployed());
 
-        authentication.deployed().then(function(instance) {
-          authenticationInstance = instance
+        ride.deployed().then(function(instance) {
+          rideInstance = instance
         
-          console.log(name,email);
           console.log('attempting signup');
           // Attempt to sign up user.
-          authenticationInstance.signup(name, email, phone, {from: coinbase})
+          rideInstance.signup(name, email, phone, {from: coinbase})
           .then(function(result) {
             // If no error, login user.
             console.log('will login User');
-            console.log(result)
-
             return dispatch(verifyIdentity())
           })
           .catch(function(result) {
             // If error...
-          console.log('errorrr');
+          alert('error signing up');
           })
         }) 
 

@@ -10,7 +10,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onLoginUserClick: (event) => {
-      event.preventDefault();
+    event.preventDefault();
 
       dispatch(verifyIdentity())
     }

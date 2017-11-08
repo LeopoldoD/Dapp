@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import ResultsList from './ResultsList'
 import {results} from '../searchform/SearchFormActions'
-import Results from './ResultsList'
 
 class BookingForm extends Component {
   constructor(props) {
@@ -29,17 +28,17 @@ class BookingForm extends Component {
   handleSubmit(event) {
     event.preventDefault();
     
-    if (this.state.selection == 0 || this.state.selection > this.state.searchresults.length) {
+    if (this.state.selection === 0 || this.state.selection > this.state.searchresults.length) {
 
       return alert ('Please enter a valid selection');
 
     } 
 
-    if (this.state.searchresults[this.state.selection-1].availableseats == 0){
+    if (this.state.searchresults[this.state.selection-1].availableseats === 0){
       return alert ('This trip is fully booked, please select a different one');
     }
    
-    if (this.state.seats>5 || this.state.seats ==0 || this.state.seats == undefined || this.state.seats > this.state.searchresults[this.state.selection-1].availableseats){
+    if (this.state.seats>5 || this.state.seats ===0 || this.state.seats === undefined || this.state.seats > this.state.searchresults[this.state.selection-1].availableseats){
       return alert ('Please enter a valid number of seats');
     }
 

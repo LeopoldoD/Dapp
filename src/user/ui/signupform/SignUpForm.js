@@ -23,7 +23,7 @@ class SignUpForm extends Component {
   }
 
   handleSubmit(event) {
-    event.preventDefault()
+  event.preventDefault()
 
     //Review lengths name, phone and email
 
@@ -40,18 +40,11 @@ class SignUpForm extends Component {
       return alert('Please enter a valid email');
     }
 
-    if(this.state.phone.match(phoneformat)){
-      console.log('valid phone number');
-    }
-
     // Check email and phone format
-
     var emailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; //Regular expression
     var phoneformat = /^[-+]?[0-9]+$/;  
 
-    console.log('email/phone verification');
     if(this.state.email.match(emailformat) && this.state.phone.match(phoneformat))  { 
-      console.log('valid email, valid phone number')
       this.props.onSignUpFormSubmit(this.state.name, this.state.email, this.state.phone)
     }
     else

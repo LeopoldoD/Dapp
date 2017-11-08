@@ -1,17 +1,11 @@
 import React, { Component } from 'react'
-//import RidesList from './RidesList'
-import {getMyRides} from './MyRidesFormActions'
-import MyRidesFormContainer from './MyRidesFormContainer'
-import { connect } from 'react-redux'
-//import IPFSUploader from './IPFSUploader.js';
-
 import {resdriving, resmyrides} from './MyRidesFormActions'
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 
 class MyRidesForm extends Component {
    constructor(props){
-    //console.log('First');
+
     super(props)
     this.state = {
       loaded: '',
@@ -24,6 +18,7 @@ class MyRidesForm extends Component {
       this.props.onGetMyRidesSubmit();
   }
   handleRender (event){
+    event.preventDefault()
     this.props.onGetMyRidesSubmit();
   }
 
@@ -31,7 +26,7 @@ class MyRidesForm extends Component {
        // this.handleRender();
     return(
       <div>
-      <RidesList wait={1000} testfunc={this.props.onGetMyRidesSubmit()}/>      
+      <RidesList wait={3000} testfunc={this.props.onGetMyRidesSubmit()}/>      
       </div> 
  
     )
@@ -132,6 +127,10 @@ class RidesList extends Component{
                   Header: "Cost per person",
                   accessor: "cost",
                 },
+                {
+                  Header: "Meeting Location",
+                  accessor: "meetingpoint",
+                },
               ]
             },
           ]}
@@ -173,12 +172,20 @@ class RidesList extends Component{
                   accessor: "seats",
                 },
                 {
-                  Header: "#Seats",
-                  accessor: "availableseats",
+                  Header: "Booked Seats",
+                  accessor: "seatsbooked",
                 },
                 {
-                  Header: "Cost per person",
-                  accessor: "cost",
+                  Header: "Status",
+                  accessor: "status",
+                },
+                {
+                  Header: "Total Paid",
+                  accessor: "paid",
+                },
+                {
+                  Header: "Meeting Location",
+                  accessor: "meetingpoint",
                 },
               ]
             },{

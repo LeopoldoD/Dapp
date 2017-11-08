@@ -3,7 +3,6 @@ import {results} from '../searchform/SearchFormActions'
 // Import React Table
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-import BookingForm from './BookingForm'
 
 class ResultsList extends Component{
   constructor(props){
@@ -55,7 +54,7 @@ class ResultsList extends Component{
                   accessor: "seats",
                 },
                 {
-                  Header: "#Seats",
+                  Header: "# Available Seats",
                   accessor: "availableseats",
                 },
                 {

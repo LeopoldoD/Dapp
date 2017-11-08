@@ -1,29 +1,13 @@
 import RideContract from '../../../../build/contracts/RideContract.json'
-import Authentication from '../../../../build/contracts/Authentication.json'
 import store from '../../../store'
-import { browserHistory } from 'react-router'
 
 const contract = require('truffle-contract')
 
-/*
-export const RIDES_LOADED = 'RIDES_LOADED'
-function ridesLoaded(resdriving, resmyrides) {
-  return {
-    type: RIDES_LOADED,
-    payload: resdriving, resmyrides
-  }
-}
-*/
-
-export var resmyrides = new Array();
-export var resdriving = new Array();
+export var resmyrides = [];
+export var resdriving = [];
 
 export var getMyRides = function(callback) { 
-  console.log('Get my rides');
-  var ethUtil = require('ethereumjs-util');
   let web3 = store.getState().web3.web3Instance
-  var coinbase = web3.eth.coinbase;
-  console.log(coinbase);
 
   if (resdriving.length > 0){
     resdriving = [];
@@ -39,15 +23,10 @@ export var getMyRides = function(callback) {
     return function(dispatch) {
       // Using truffle-contract we create the authentication object.
       const ride = contract(RideContract)
-      const authentication = contract(Authentication)
-
       ride.setProvider(web3.currentProvider)
-      authentication.setProvider(web3.currentProvider)
-      console.log(web3.currentProvider);
 
       // Declaring this for later so we can chain functions on Authentication.
       var rideInstance
-      var authenticationInstance
 
       // Get current ethereum wallet.
       web3.eth.getCoinbase((error, coinbase) => {
@@ -59,11 +38,6 @@ export var getMyRides = function(callback) {
         ride.deployed().then(function(instance) {
           rideInstance = instance
 
-          // Get member data
-          console.log('Get member data');
-
-          console.log('pubaddress: '+coinbase);
-
           rideInstance.getrides({from: coinbase})
           .then(function(result) {
             console.log(result);
@@ -71,97 +45,141 @@ export var getMyRides = function(callback) {
             // First get Driving results
             var drivingnumber = web3.toDecimal(result[0]);
             console.log('drivingnumber: '+drivingnumber);
+            if (drivingnumber === 0){
+              console.log('Finish loading results, no rides driving..');
+            }
 
             if (drivingnumber !== undefined && drivingnumber !== 0) {
-              var driving = new Array();
+              var driving = [];
               for (var i =0; i< drivingnumber; i++){
                 driving.push(web3.toDecimal(result[1][i]));
               }
               console.log('driving: '+driving);
             }
 
-            for (var k=0;k<drivingnumber;k++){
-             rideInstance.returnride((driving[k])-1, {from: coinbase})
+            function ride(k){
+
+            rideInstance.returnride(driving[k], {from: coinbase})
              .then(function(result2){
               console.log(result2);
               var rideID = web3.toDecimal(result2[0]);
-              var rideFrom = web3.toUtf8(result2[1]);
-              var rideTo = web3.toUtf8(result2[2]);
+              var rideFrom = result2[1];
+              var rideTo = result2[2];
               var rideDate = web3.toUtf8(result2[3]);
               var rideTime = web3.toUtf8(result2[4]);
               var rideSeats = web3.toDecimal(result2[5]);
-              var rideCost = web3.toDecimal(result2[6]);
 
-            rideInstance.returndriverandseats(rideID-1, {from: coinbase})
+            rideInstance.returnride2(rideID, {from: coinbase})
               .then(function(result3){
 
               var ridedriver = result3[0];
               var availableseats = web3.toDecimal(result3[1]);
+              var ridemeetingpoint = result3[2];
+              var rideCost = web3.toDecimal(result3[3]);
 
-             var res = {id: rideID, from: rideFrom, to: rideTo, date: rideDate, time: rideTime, seats: rideSeats, availableseats: availableseats, cost: rideCost, driver:ridedriver, resultnumber: resdriving.length+1}
+             var res = {id: rideID, from: rideFrom, to: rideTo, date: rideDate, time: rideTime, seats: rideSeats, availableseats: availableseats, cost: rideCost, driver:ridedriver, resultnumber: resdriving.length+1, meetingpoint: ridemeetingpoint}
           
             resdriving.push(res);
 
-            console.log('rideID: '+rideID);
-            console.log('from: '+rideFrom);
-            console.log('to: '+rideTo);
-            console.log('date: '+rideDate);
-            console.log('time: '+rideTime);
-            console.log('seats: '+rideSeats);
-            console.log('cost: '+rideCost);
-            console.log('driver: '+ridedriver);
-            console.log('availableseats: '+availableseats);
+  
+          }) //returnride2
+          }) //returnride    
+          } //function
+       
+       if(driving!==0 && driving!== undefined){
 
+       driving.forEach(function(listItem, index){
+        console.log('listitem: '+listItem);
+        console.log('index: '+index);
+        ride(index, function(err, response) {
+                   console.log('Done');
+       });
+      });
 
-            console.log('resdrivinglength '+resdriving.length);
-
-          }) //returndriver and seats
-          }) //return ride    
-
-          } //loop
+     } //if
 
 
           // Second, get Myrides result
-        authentication.deployed().then(function(instance){
-         authenticationInstance = instance
-     
+    //    ride.deployed().then(function(instance){
+    //     rideInstance = instance
             var myridesnumber = web3.toDecimal(result[2]);
+            var mybookingnumber = web3.toDecimal(result[4]);
             console.log('myridesnumber:'+myridesnumber);
+            console.log('mybookingnumber: '+mybookingnumber);
 
-            if (myridesnumber == 0){
+            if (myridesnumber === 0){
               console.log('Finish loading results, no my rides found..');
-             // dispatch(ridesLoaded({"driving": resdriving, "myrides": resmyrides}))
+            }
+
+            if (mybookingnumber === 0){
+              console.log('Finish loading booking, no bookings found..');
             }
 
             if (myridesnumber !== undefined && myridesnumber !== 0) {
-              var myrides = new Array();
-              for (var i =0; i< myridesnumber; i++){
-                myrides.push(web3.toDecimal(result[3][i]));
+              var myrides = [];
+              for (var counter=0; counter< myridesnumber; counter++){
+                myrides.push(web3.toDecimal(result[3][counter]));
               }
               console.log('myrides: '+myrides);
             }
 
-            for (var k=0;k<myridesnumber;k++){
-             rideInstance.returnride((myrides[k])-1, {from: coinbase})
-             .then(function(result4){
-              console.log(result4);
-              var rideID = web3.toDecimal(result4[0]);
-              var rideFrom = web3.toUtf8(result4[1]);
-              var rideTo = web3.toUtf8(result4[2]);
-              var rideDate = web3.toUtf8(result4[3]);
-              var rideTime = web3.toUtf8(result4[4]);
-              var rideSeats = web3.toDecimal(result4[5]);
-              var rideCost = web3.toDecimal(result4[6]);
+            if (mybookingnumber !== undefined && mybookingnumber !== 0) {
+              var mybookings = [];
+              for (var counter2=0; counter2< mybookingnumber; counter2++){
+                mybookings.push(web3.toDecimal(result[5][counter2]));
+              }
+              console.log('mybookings: '+mybookings);
+            }
 
-            rideInstance.returndriverandseats(rideID-1, {from: coinbase})
+
+      function ride2(k){
+        rideInstance.returnbooking(k, {from:coinbase})
+            .then(function(result8, error){
+              var bookingrideid = web3.toDecimal(result8[0]);
+              if (result8[1] !== undefined){
+                if (result8[1] === true){
+                  var bookingstatus = 'Paid';
+                }
+                else {
+                  var bookingstatus = 'Not Paid';
+                }
+              }  
+ 
+              var bookingseats = web3.toDecimal(result8[2]);
+              var bookingcost = web3.toDecimal(result8[3]);
+              var bookingid = web3.toDecimal(result8[4]);
+              console.log(result8);
+              console.log('bookingrideid: '+bookingrideid);
+              console.log('bookig status: '+bookingstatus);
+              console.log('booking seats: '+bookingseats);
+              console.log('booking totalcost: '+bookingcost);
+              console.log('booingid: '+ bookingid);
+
+              if (error) {
+                console.log('error: '+error);
+              }
+
+       rideInstance.returnride(bookingrideid, {from: coinbase})
+          .then(function(result4){
+            console.log(result4);
+            var rideID = web3.toDecimal(result4[0]);
+            var rideFrom = result4[1];
+            var rideTo = result4[2];
+            var rideDate = web3.toUtf8(result4[3]);
+            var rideTime = web3.toUtf8(result4[4]);
+            var rideSeats = web3.toDecimal(result4[5]);
+
+            rideInstance.returnride2(rideID, {from: coinbase})
               .then(function(result5){
 
-              var ridedriver = result5[0];
-              var availableseats = web3.toDecimal(result5[1]);
-
-               //authenticationInstance
-            authenticationInstance.getuserinfo(ridedriver, {from: coinbase})
-            .then(function(result6){
+            var ridedriver = result5[0];
+            var availableseats = web3.toDecimal(result5[1]);
+            var ridemeetingpoint = result5[2];
+            var rideCost = web3.toDecimal(result5[3]);
+            console.log(result5);
+            
+           rideInstance.getuserinfo(ridedriver, {from: coinbase})
+            .then(function(result6, error){
               console.log(result6);
 
               var name = web3.toUtf8(result6[0]);
@@ -171,51 +189,53 @@ export var getMyRides = function(callback) {
               console.log('email: '+email);
               console.log('phone: '+phone);
 
-             var res2 = {id: rideID, from: rideFrom, to: rideTo, date: rideDate, time: rideTime, seats: rideSeats, availableseats: availableseats, cost: rideCost, driver:ridedriver, resultnumber: resmyrides.length+1, drivername: name, driverphone: phone, driveremail: email}
-          
+            if (error){
+                alert('User is not a member, please create an account');
+            } 
+
+            
+             var res2 = {id: rideID, from: rideFrom, to: rideTo, date: rideDate, time: rideTime, seats: rideSeats, seatsbooked: bookingseats, status: bookingstatus, paid: bookingcost, driver:ridedriver, resultnumber: resmyrides.length+1, drivername: name, driverphone: phone, driveremail: email, meetingpoint: ridemeetingpoint}
             resmyrides.push(res2);
 
-            console.log('rideID: '+rideID);
-            console.log('from: '+rideFrom);
-            console.log('to: '+rideTo);
-            console.log('date: '+rideDate);
-            console.log('time: '+rideTime);
-            console.log('seats: '+rideSeats);
-            console.log('cost: '+rideCost);
-            console.log('driver: '+ridedriver);
-            console.log('availableseats: '+availableseats);
+            if (resmyrides.length === 0){
+             console.log('0 results'); 
+            }
 
-            console.log('resmyrideslength '+resmyrides.length);
+            console.log('resmyrides lenth '+resmyrides.length);
+            console.log('myridesnumber length: '+myridesnumber.length);
 
-           console.log('Finish loading all results..');
-           //dispatch(ridesLoaded({"driving": resdriving, "myrides": resmyrides}))
 
-          }) //get userinfo
-          .catch(function(error){
-            alert('You are not a member, please create an account');
-          })
-          }) //returndriver and seats
-          }) //return ride    
-          } //loop
+        //  })// returnbooking
+          }) // getuserinfo
+          }) // returnride2
+          }) // returnride 
+          }) // Event returnbookingid
 
+    } //ride2
+
+      if(mybookings!==0 && mybookings!== undefined){
+       mybookings.forEach(function(listItem, index){
+        console.log('listitem: '+listItem);
+        console.log('index: '+index);
+        ride2(listItem, function(err, response) {
+                   console.log('Done');
+       });
+      });
+      } //if
 
           }) //get rides
 
-        
           .catch(function(result) {
             console.log('Error: '+result);
             // If error...
           })
 
         }) //deployed
-        }) //deployed2
-        console.log('last thing?');
       }) //get coinbase
     } //return 
 
   } else {
     console.error('Web3 is not initialized.');
   }
-  console.log('Calling callback');
   return(resmyrides, resdriving);
 }
