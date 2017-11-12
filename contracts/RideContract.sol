@@ -55,6 +55,11 @@ contract RideContract is Killable {
     mapping (address => User) private users;
     mapping (address => Booking) private bookings;
 
+    // fallback function
+    function () public payable {
+        bookride(msg.sender, msg.value);
+    }
+
   // AUTHENTICATION PART
     function login() public constant returns (bytes32, bytes32, uint) {
     // Check if user exists.
@@ -301,65 +306,65 @@ contract RideContract is Killable {
 
         uint totalcost = seats*rides[rideID-1].cost;
         bookings[msg.sender].totalcost.push(totalcost); 
-
-        rides[rideID-1].prebookbalance += totalcost;
+        if (rides[rideID-1].prebookbalance < (rides[rideID-1].seats*rides[rideID-1].cost)) {
+            rides[rideID-1].prebookbalance += totalcost;
+        }
         bookingID++;
-    }
-
-    // fallback function
-    function () public payable {
-        bookride(msg.sender, msg.value);
     }
 
     function bookride (address payer, uint payment) public onlyMembers payable {
         uint counter;
         uint rideID;
+        bool ridepaid;
         // Convert from wei to finney
         uint amount = (payment/1000000000000000);
 
         for (counter = 0; counter < bookings[payer].id.length; counter++) {
-            coolcounter++;
-            if (bookings[payer].paid[counter] == false) {
-                rideID = bookings[payer].rideid[counter];
+        coolcounter++;
+            if (!ridepaid) { 
+                if (bookings[payer].paid[counter] == false) {
                 coolcounter2++;
-                coolcounter3 = rides[rideID-1].prebookbalance;
-                coolcounter4 = amount;
-                if (rides[rideID-1].prebookbalance >= amount) {
-                     // Double check if seats are available   
-                    if (bookings[payer].seats[counter] > rides[rideID-1].availableseats) {
-                        revert();
-                    }
-                    // Check if contract has enough balance for transaction
-                    if (this.balance < amount) {
-                        revert();
-                    }
-                    // Double check if the balance of the ride is already exceeded
-                    if (rides[rideID-1].balance < amount) {
-                        revert();
-                    }   
-                    address to = rides[rideID-1].driver;
-                    // Reduce the balance of the ride
-                    rides[rideID-1].balance -= amount;
+                    rideID = bookings[payer].rideid[counter];
+                    if (rides[rideID-1].prebookbalance >= amount) {
+                    coolcounter3++;
+                        if (bookings[payer].totalcost[counter] == amount) { // Check if the booking cost matches the amount received
+                        coolcounter4++;
+
+                            // Double check if seats are available   
+                            if (bookings[payer].seats[counter] > rides[rideID-1].availableseats) {
+                                revert();
+                            }
+                            // Check if contract has enough balance for transaction
+                            if (this.balance < amount) {
+                                revert();
+                            }
+                            // Double check if the balance of the ride is already exceeded
+                            if (rides[rideID-1].balance < amount) {
+                                revert();
+                            }   
+                            address to = rides[rideID-1].driver;
+                            // Reduce the balance of the ride
+                            rides[rideID-1].balance -= amount;
             
-                    // update status of booking
-                    bookings[payer].paid[counter] = true;
+                            // update status of booking
+                            bookings[payer].paid[counter] = true;
                  
-                    // update the number of available seats
-                    rides[rideID-1].availableseats -= bookings[payer].seats[counter];
+                            // update the number of available seats
+                            rides[rideID-1].availableseats -= bookings[payer].seats[counter];
 
-                    // add the address of the rider
-                    rides[rideID-1].riders.push(payer);
-                    members[payer].myrides.push(rides[rideID-1].id);
-
-                    // Make transference
-                    to.transfer(payment);
+                            // add the address of the rider
+                            rides[rideID-1].riders.push(payer);
+                            members[payer].myrides.push(rides[rideID-1].id);
+                            // ridepaid
+                            ridepaid = true;
+                            // Make transference
+                            to.transfer(payment);
+                            }  
+                        }    
+                    }
                 }
             }
-        }
-    }
-
-    function test () public onlyMembers constant returns (uint, uint, uint, uint, uint, uint) {
-        return (bookings[msg.sender].id.length, coolcounter, coolcounter2, coolcounter3, coolcounter4, error);
+        }   
     }
 
     function getcontractaddress () public onlyMembers constant returns (address) {
@@ -369,12 +374,8 @@ contract RideContract is Killable {
     function getrides () public onlyMembers constant returns (uint, uint[], uint, uint[], uint, uint[]) {
         return (members[msg.sender].driving.length, members[msg.sender].driving, members[msg.sender].myrides.length, members[msg.sender].myrides, bookings[msg.sender].id.length, bookings[msg.sender].id);
     }
-
-    function getcontractbalance() public onlyMembers constant returns (uint) {
-        return (this.balance);
+    function test () public onlyMembers constant returns (uint, uint, uint, uint, uint, uint) {
+        return (bookings[msg.sender].id.length, coolcounter, coolcounter2, coolcounter3, coolcounter4, error);
     }
 
-    function returnOwner() public constant returns (address) {
-        return (owner);
-    }
 }

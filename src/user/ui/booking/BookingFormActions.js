@@ -73,25 +73,14 @@ export function bookRide(id, seats) {
                 }
                 console.log(result3);
 
-                rideInstance.test({from: pubaddress}).then(function(test){
-                  var test2 = web3.toDecimal(test[0]);
-                  var test3 = web3.toDecimal(test[1]);
-                  var test4 = web3.toDecimal(test[2]);
-                  var test5 = web3.toDecimal(test[3]);
-                  var test6 = web3.toDecimal(test[4]);
-                  var test7 = web3.toDecimal(test[5]);
-                  console.log(test2);
-                  console.log(test3);
-                  console.log('coolcounter 2: '+test4);
-                  console.log('coolcounter 3: '+test5);
-                  console.log('coolcounter 4: '+test6);
-                  console.log('error: '+test7);
-                  console.log(test);
+              rideInstance.test({from:pubaddress}).then(function(test){
+                var coolcounter = web3.toDecimal(test[1]);
+                var coolcounter2 = web3.toDecimal(test[2]);
+                var coolcounter3 = web3.toDecimal(test[3]);
+                var coolcounter4 = web3.toDecimal(test[4]);
+                var cool = web3.toDecimal(test[5]);
+                console.log(test);
 
-         /* rideInstance.bookride(id, seats, {from: pubaddress, gas: 440000})
-          .then(function(result2){
-            console.log('Ride booked!')
-*/
             var currentLocation = browserHistory.getCurrentLocation()
 
             if ('redirect' in currentLocation.query)
@@ -107,7 +96,7 @@ export function bookRide(id, seats) {
             alert('Error at bookride: Ride ID invalid or invalid number of seats '+e);
           });
 
-          }) // Send transaction
+         }) // Send transaction
           .catch(function(e){
             alert('Error transfering ether to driver');
           });

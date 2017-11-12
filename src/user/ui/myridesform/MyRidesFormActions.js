@@ -135,13 +135,14 @@ export var getMyRides = function(callback) {
       function ride2(k){
         rideInstance.returnbooking(k, {from:coinbase})
             .then(function(result8, error){
+              var bookingstatus;
               var bookingrideid = web3.toDecimal(result8[0]);
               if (result8[1] !== undefined){
                 if (result8[1] === true){
-                  var bookingstatus = 'Paid';
+                  bookingstatus = 'Paid';
                 }
                 else {
-                  var bookingstatus = 'Not Paid';
+                  bookingstatus = 'Not Paid';
                 }
               }  
  
@@ -173,10 +174,9 @@ export var getMyRides = function(callback) {
               .then(function(result5){
 
             var ridedriver = result5[0];
-            var availableseats = web3.toDecimal(result5[1]);
+            //var availableseats = web3.toDecimal(result5[1]);
             var ridemeetingpoint = result5[2];
-            var rideCost = web3.toDecimal(result5[3]);
-            console.log(result5);
+            //var rideCost = web3.toDecimal(result5[3]);
             
            rideInstance.getuserinfo(ridedriver, {from: coinbase})
             .then(function(result6, error){

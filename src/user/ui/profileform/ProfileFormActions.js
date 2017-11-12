@@ -37,14 +37,14 @@ export function updateUser(name, email, phone) {
           rideInstance = instance
 
           // Return owner  
-          rideInstance.returnOwner({from: coinbase}).then(function(owner, error){    
+/*          rideInstance.returnOwner({from: coinbase}).then(function(owner, error){    
           console.log('owner: '+owner); 
 
           // Get contract balance
           rideInstance.getcontractbalance({from: coinbase}).then(function(balance){
             var contractbalance = web3.toDecimal(balance);
             console.log(contractbalance);
-
+*/
 
           // Attempt to update user
           rideInstance.update(name, email, phone, {from: coinbase})
@@ -57,11 +57,11 @@ export function updateUser(name, email, phone) {
 
             return alert('Name, email and phone number updated!')
           }) // update
-           }) // owner
+        //   }) // owner
           .catch(function(error){
             console.log('error ownable: '+error);
           })
-        }) // getcontracbalance
+        //}) // getcontracbalance
           .catch(function(result) {
             // If error...
           })
