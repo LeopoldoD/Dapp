@@ -55,13 +55,13 @@ export function bookRide(id, seats) {
             console.log(result2);
 
             var contractaddress;
-            rideInstance.getcontractaddress({from: pubaddress}).then(function(contract){
+            rideInstance.getcontractaddress({from: pubaddress})
+            .then(function(contract){
               console.log(contract)
               contractaddress = contract;
 
             web3.eth.sendTransaction({
             from: pubaddress,
-            // to:  result[0],
             to: contractaddress,
             value: web3.toWei(totalcost, 'finney') 
               }, function(error, result3) {
@@ -69,18 +69,18 @@ export function bookRide(id, seats) {
                   console.log('Ride paid!')
                 } 
                 else {
-                  console.log('Error: '+error);
+                  console.log('Error sending transaction: '+error);
                 }
                 console.log(result3);
 
-              rideInstance.test({from:pubaddress}).then(function(test){
+            /*  rideInstance.test({from:pubaddress}).then(function(test){
                 var coolcounter = web3.toDecimal(test[1]);
                 var coolcounter2 = web3.toDecimal(test[2]);
                 var coolcounter3 = web3.toDecimal(test[3]);
                 var coolcounter4 = web3.toDecimal(test[4]);
                 var cool = web3.toDecimal(test[5]);
                 console.log(test);
-
+*/
             var currentLocation = browserHistory.getCurrentLocation()
 
             if ('redirect' in currentLocation.query)
@@ -89,28 +89,22 @@ export function bookRide(id, seats) {
             }
 
             return browserHistory.push('/dashboard')
-                    })// test
 
-      //    }) //bookride
+          }) // Send transaction
+
+          }) // getcontractaddress
+        .catch(function(e){
+            alert('Error getting contract address '+e);
+        });
+
+          }) // prebook
+        .catch(function(e){
+            alert('Error at prebooking: '+e);
+        });
+
+          }) //check seats and cost
           .catch(function(e){
-            alert('Error at bookride: Ride ID invalid or invalid number of seats '+e);
-          });
-
-         }) // Send transaction
-          .catch(function(e){
-            alert('Error transfering ether to driver');
-          });
-
-        }) // getcontractaddress
-
-          }) //verify booking
-        //  .catch(function(e){
-        //    alert('Error at verifybooking, driver can not book own ride');
-         // });
-
-          }) //get available seats
-          .catch(function(e){
-            alert('Error at Getavailableseats: Ride ID invalid');
+            alert('Error at checkseatsandcost: '+e);
           });
 
         }) //deployed 
@@ -128,5 +122,4 @@ export function bookRide(id, seats) {
   } else {
     console.error('Web3 is not initialized.');
   }
-  
 } 

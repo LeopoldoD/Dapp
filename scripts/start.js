@@ -21,6 +21,8 @@ var prompt = require('react-dev-utils/prompt');
 var pathExists = require('path-exists');
 var config = require('../config/webpack.config.dev');
 var paths = require('../config/paths');
+var express = require('express') //polo 
+var helmet = require('helmet') //polo
 
 var useYarn = pathExists.sync(paths.yarnLockFile);
 var cli = useYarn ? 'yarn' : 'npm';
@@ -151,6 +153,12 @@ function onProxyError(proxy) {
 }
 
 function addMiddleware(devServer) {
+  //var app = express()
+  // addd helmet middleware   polo 
+  //devServer.use(helmet.noSniff())
+  devServer.use(helmet.xssFilter())
+  devServer.use(helmet.frameguard({ action: 'sameorigin' }))
+  devServer.use(helmet.noSniff())
   // `proxy` lets you to specify a fallback server during development.
   // Every unrecognized request will be forwarded to it.
   var proxy = require(paths.appPackageJson).proxy;
@@ -262,6 +270,8 @@ function runDevServer(host, port, protocol) {
 
   // Our custom middleware proxies requests to /index.html or a remote API.
   addMiddleware(devServer);
+
+  devServer.use(helmet())
 
   // Launch WebpackDevServer.
   devServer.listen(port, (err, result) => {

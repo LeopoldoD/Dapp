@@ -27,8 +27,8 @@ contract RideContract is Killable {
     }
 
     struct Member {
-        uint[] driving; // new
-        uint[] myrides; // news
+        uint[] driving; 
+        uint[] myrides; 
     }
 
     struct Booking {
@@ -44,16 +44,11 @@ contract RideContract is Killable {
     uint private bookingID;
     uint[] private rideinstances;
     address[] private regmembers;
-    uint private coolcounter;
-    uint private coolcounter2;
-    uint private coolcounter3;
-    uint private coolcounter4;
-    uint private error;
 
-    mapping (uint => Ride) private rides; 
-    mapping (address => Member) private members;
-    mapping (address => User) private users;
-    mapping (address => Booking) private bookings;
+    mapping (address => User) private users; // Account management
+    mapping (uint => Ride) private rides;  // Ride Information
+    mapping (address => Member) private members; // Specific ride results
+    mapping (address => Booking) private bookings; // Booking information
 
     // fallback function
     function () public payable {
@@ -320,15 +315,11 @@ contract RideContract is Killable {
         uint amount = (payment/1000000000000000);
 
         for (counter = 0; counter < bookings[payer].id.length; counter++) {
-        coolcounter++;
             if (!ridepaid) { 
                 if (bookings[payer].paid[counter] == false) {
-                coolcounter2++;
                     rideID = bookings[payer].rideid[counter];
                     if (rides[rideID-1].prebookbalance >= amount) {
-                    coolcounter3++;
                         if (bookings[payer].totalcost[counter] == amount) { // Check if the booking cost matches the amount received
-                        coolcounter4++;
 
                             // Double check if seats are available   
                             if (bookings[payer].seats[counter] > rides[rideID-1].availableseats) {
@@ -358,8 +349,7 @@ contract RideContract is Killable {
                             // ridepaid
                             ridepaid = true;
                             // Make transference
-                            to.transfer(payment);
-                            }  
+                            to.transfer(payment);  
                         }    
                     }
                 }
@@ -374,8 +364,4 @@ contract RideContract is Killable {
     function getrides () public onlyMembers constant returns (uint, uint[], uint, uint[], uint, uint[]) {
         return (members[msg.sender].driving.length, members[msg.sender].driving, members[msg.sender].myrides.length, members[msg.sender].myrides, bookings[msg.sender].id.length, bookings[msg.sender].id);
     }
-    function test () public onlyMembers constant returns (uint, uint, uint, uint, uint, uint) {
-        return (bookings[msg.sender].id.length, coolcounter, coolcounter2, coolcounter3, coolcounter4, error);
-    }
-
 }

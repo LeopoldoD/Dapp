@@ -5,25 +5,18 @@ import "react-table/react-table.css";
 
 class MyRidesForm extends Component {
    constructor(props){
-
     super(props)
     this.state = {
       loaded: '',
     }
-    this.handleRender = this.handleRender.bind(this);
   }
 
   handleSubmit(event) {
     event.preventDefault()
       this.props.onGetMyRidesSubmit();
   }
-  handleRender (event){
-    event.preventDefault()
-    this.props.onGetMyRidesSubmit();
-  }
 
   render() { console.log('Myridesform');
-       // this.handleRender();
     return(
       <div>
       <RidesList wait={3000} testfunc={this.props.onGetMyRidesSubmit()}/>      
@@ -62,6 +55,7 @@ class RidesList extends Component{
 
   componentWillMount() {
     console.log('Mounting data');
+    // eslint-disable-next-line
     this.props.testfunc;
     
     var that = this;
@@ -208,9 +202,5 @@ class RidesList extends Component{
       </div>); 
 }
 }
-
-
-
-
 
 export default MyRidesForm
