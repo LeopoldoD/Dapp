@@ -96,7 +96,7 @@ contract RideContract is Killable {
     }
 
     function update(bytes32 name, bytes32 email, uint phone) public onlyMembers returns (bytes32, bytes32, uint) {
-    // Update user name.
+    // Update user account.
 
         if (name == 0x0 || email == 0x0 || phone == 0x0) {
             revert();
@@ -254,16 +254,6 @@ contract RideContract is Killable {
         }
     }
 
-    function returnbooking(uint bookingID) public onlyMembers constant returns (uint, bool, uint, uint, uint) {
-    // Provide booking information
-        uint counter;
-        for (counter = 0; counter < bookings[msg.sender].id.length; counter++) {
-            if (bookings[msg.sender].id[counter] == bookingID) {
-                return (bookings[msg.sender].rideid[counter], bookings[msg.sender].paid[counter], bookings[msg.sender].seats[counter], bookings[msg.sender].totalcost[counter], bookings[msg.sender].id[counter]); 
-            }
-        }
-    }
-
     function checkseatsandcost(uint rideID, uint seats) public onlyMembers constant returns (uint, uint) {
         if (!checkrideid(rideID)) {
             revert();
@@ -355,6 +345,16 @@ contract RideContract is Killable {
                 }
             }
         }   
+    }
+
+    function returnbooking(uint bookingID) public onlyMembers constant returns (uint, bool, uint, uint, uint) {
+    // Provide booking information
+        uint counter;
+        for (counter = 0; counter < bookings[msg.sender].id.length; counter++) {
+            if (bookings[msg.sender].id[counter] == bookingID) {
+                return (bookings[msg.sender].rideid[counter], bookings[msg.sender].paid[counter], bookings[msg.sender].seats[counter], bookings[msg.sender].totalcost[counter], bookings[msg.sender].id[counter]); 
+            }
+        }
     }
 
     function getcontractaddress () public onlyMembers constant returns (address) {

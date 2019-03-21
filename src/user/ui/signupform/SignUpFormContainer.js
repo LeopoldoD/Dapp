@@ -10,7 +10,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onSignUpFormSubmit: (name, email, phone) => {
       event.preventDefault();
-      console.log('hola');
       dispatch(signUpUser(name, email, phone))
     }
   }

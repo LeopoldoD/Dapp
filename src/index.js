@@ -4,7 +4,6 @@ import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 import { Provider } from 'react-redux'
 import { syncHistoryWithStore } from 'react-router-redux'
 import { UserIsAuthenticated, UserIsNotAuthenticated } from './util/wrappers.js'
-//import { UserIsAuthenticated, UserIsNotAuthenticated, UserRidesLoaded } from './util/wrappers.js'
 import getWeb3 from './util/web3/getWeb3'
 
 // Layouts
